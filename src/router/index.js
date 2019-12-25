@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import LeftNav from '@/components/LeftNav'
 import TopNav from '@/components/TopNav';
 import Home from '@/components/Home'
+import Index from '@/components/Index'
 //使用Vue-Router插件
 Vue.use(Router);
 
@@ -32,7 +33,12 @@ const router= new Router({
       path: '/topnav',
       name: 'TopNav',
       component: TopNav
-    }
+    },
+    {
+      path: '/index',
+      name: 'Index',
+      component: Index
+    },
   ]
 });
 // //挂载路由导航守卫
