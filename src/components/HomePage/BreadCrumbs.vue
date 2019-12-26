@@ -8,12 +8,13 @@
 
 <script>
     export default {
-        name: "nav"
+        name: "BreadCrumbs"
     }
 </script>
 
 <style scoped lang="less">
   div{
+    width: 1920px;
     background-color: #eeeeee;
     span{
       font-size: 14px;

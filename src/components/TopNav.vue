@@ -1,21 +1,26 @@
 <template>
   <div class="app">
-    <div class="gw">
+<!--    回到官网-->
+    <div class="officialWebsite">
       <img src="../assets/TopNav/回到官网.png" alt="" />
       <a href="#">回到官网</a>
     </div>
-    <div class="dl">
+<!--    登录-->
+    <div class="login">
       <img src="../assets/TopNav/登录.png" alt="" />
       <a href="#">登录</a>
     </div>
-    <div class="qyzx">
+<!--    企业中心-->
+    <div class="enterpriseCenter">
       <a href="#"> 企业中心</a>
     </div>
-    <div class="kf">
+<!--    客服-->
+    <div class="customerServiceStaff">
       <img src="../assets/TopNav/客服.png" alt="" />
       <a href="#">客服</a>
     </div>
-    <div class="tch">
+<!--    退出-->
+    <div class="logout">
       <a href="#" @click="logout">退出</a>
     </div>
   </div>
@@ -38,20 +43,20 @@ export default {
   background-color: #eeeeee;
   width: 1920px;
   height: 40px;
-  .gw{
+  .officialWebsite{
     margin-left: 377px;
     margin-top: 5px;
   }
-  .dl{
+  .login{
     margin-left: 595px;
   }
-  .qyzx{
+  .enterpriseCenter{
     margin-left: 40px;
   }
-  .kf{
+  .customerServiceStaff{
     margin-left: 40px;
   }
-  .tch{
+  .logout{
     margin-left: 40px;
   }
   div {

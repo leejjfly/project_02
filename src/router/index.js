@@ -4,9 +4,9 @@ import Login from '@/components/Login'
 import LeftNav from '@/components/LeftNav'
 import TopNav from '@/components/TopNav';
 import Home from '@/components/Home'
-import Index from '@/components/Index'
-import Top from '@/components/Index/Top'
-import PersonalInfo from "../components/Index/PersonalInfo";
+import Index from '@/components/HomePage/HomePage'
+// import Top from '@/components/HomePage/Top'
+import PersonalInfo from "../components/HomePage/PersonalInfo";
 //使用Vue-Router插件
 Vue.use(Router);
 

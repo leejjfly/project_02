@@ -2,7 +2,7 @@
     <div id="app">
       <TopNav></TopNav>
       <Top></Top>
-      <Nav></Nav>
+      <BreadCrumbs></BreadCrumbs>
       <div style="width: 1920px;display: flex;justify-content: space-between;padding: 0 337px;background-color:#eeeeee;">
         <LeftNav style="width: 160px;">
         </LeftNav>
@@ -17,11 +17,11 @@
 <script>
   import TopNav from "../TopNav";
   import LeftNav from "../LeftNav";
-  import Top from "@/components/Index/Top";
-  import Nav from "@/components/Index/nav";
-  import PersonalInfo from "@/components/Index/PersonalInfo";
+  import Top from "@/components/HomePage/Top";
+  import BreadCrumbs from "@/components/HomePage/BreadCrumbs";
+  import PersonalInfo from "@/components/HomePage/PersonalInfo";
     export default {
-        name: "Index",
+        name: "HomePage",
       data(){
           return{
 
@@ -31,7 +31,7 @@
 
       },
       components:{
-          TopNav,LeftNav,Top,Nav,PersonalInfo
+          TopNav,LeftNav,Top,BreadCrumbs,PersonalInfo
       }
     }
 </script>

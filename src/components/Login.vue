@@ -1,6 +1,6 @@
 <template>
-  <div class="login_container">
-    <div class="login_box">
+  <div class="loginContainer">
+    <div class="loginBox">
       <!--左边的图片-->
       <div class="left">
         <img src="../assets/Login/登录_01.jpg" alt="" />
@@ -103,13 +103,13 @@ export default {
 </script>
 
 <style scoped lang="less">
-.login_container {
+.loginContainer {
   background-color: #f6f6f6;
   height: 1080px;
   width: 1920px;
   /*position: relative;*/
 }
-.login_box {
+.loginBox {
   height: 500px;
   width: 900px;
   position: relative;
