@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "tuisong"
+        name: "AccountManage"
     }
 </script>
 

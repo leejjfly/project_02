@@ -52,8 +52,8 @@ export default {
     return {
       //这是登录表单的用户名跟密码
       loginForm: {
-        username: "",
-        password: ""
+        username: "admin",
+        password: "123456"
       },
       //这是表单的验证规则对象
       loginFormRules: {
@@ -73,26 +73,30 @@ export default {
   methods: {
     //表单数据验证
     login() {
-      this.$refs.loginFormRef.validate(async valid => {
-        //如valid为假 则返回
-        if (!valid) return;
-        const { data: res } = this.$http.post("login", await this.loginForm);
-        if (res.meta.status !== 200) return this.$message.error("登陆失败");
-        this.$message.success("登陆成功");
-        //1.登录成功的token保存到客户端的sessionStorage中
-        //  1.1项目中除了登录之外的API接口，必须在登录后才能访问
-        //  1.2token只应在当前网站打开期间生效，所以将token保存在sessionStorage中
-        window.sessionStorage.setItem("token", res.data.token);
-        //2.通过编程式导航跳转到后台主页，路由地址是/home
-        this.$router.push("/topnav");
-      });
-
-
-      // if(LoginForm.username==='admin'&&LoginForm.password==='123456'){
+      // this.$refs.loginFormRef.validate(async valid => {
+      //   //如valid为假 则返回
+      //   if (!valid) return;
+      //   const { data: res } = this.$http.post("login", await this.loginForm);
+      //   if (res.meta.status !== 200) return this.$message.error("登陆失败");
       //   this.$message.success("登陆成功");
-      // }else{
-      //   this.$message.error("登陆成功");
-      // }
+      //   //1.登录成功的token保存到客户端的sessionStorage中
+      //   //  1.1项目中除了登录之外的API接口，必须在登录后才能访问
+      //   //  1.2token只应在当前网站打开期间生效，所以将token保存在sessionStorage中
+      //   window.sessionStorage.setItem("token", res.data.token);
+      //   //2.通过编程式导航跳转到后台主页，路由地址是/home
+      //   this.$router.push("/topnav");
+      // });
+
+
+     // let loginForm;
+      if(this.loginForm.username==='admin'&&this.loginForm.password==='123456'){
+        this.$message.success("登录成功");
+        this.$router.push('/topnav');
+      }else {
+        this.$message.error("登录失败");
+
+      }
+
     }
   }
 };
@@ -101,67 +105,73 @@ export default {
 <style scoped lang="less">
 .login_container {
   background-color: #f6f6f6;
-  height: 100%;
-  position: relative;
+  height: 1080px;
+  width: 1920px;
+  /*position: relative;*/
 }
 .login_box {
   height: 500px;
   width: 900px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.left {
-  display: inline;
-  width: 387px;
-  height: 500px;
-  img{
+  position: relative;
+  top: 82px;
+  /*position: absolute;*/
+  /*left: 50%;*/
+  /*top: 50%;*/
+  /*transform: translate(-50%, -50%);*/
+  margin-left: 524px;
+  .left {
+    display: inline;
     width: 387px;
     height: 500px;
-  }
-}
-.right {
-  position: relative;
-  width: 500px;
-  height: 500px;
-  /*外层阴影*/
-  box-shadow: 2px 2px 5px #339999;
-  display: inline-block;
-  .form {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    p {
-      margin-top: 80px;
-      color: #339999;
-      text-align: center;
-      font-family: "Microsoft YaHei";
-    }
-    .el-input {
-      width: 300px;
-      margin-top: 30px;
-    }
-    .el-button {
-      width: 300px;
-      height: 40px;
-      background-color: #339999;
-      margin-top: 30px;
-    }
-    a {
-      text-decoration: none;
-      outline: none;
-      color: #339999;
-    }
-    .reg {
-      margin-right: 80px;
-    }
-    .forget {
-      margin-left: 105px;
+    img{
+      width: 387px;
+      height: 500px;
     }
   }
+  .right {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    /*外层阴影*/
+    box-shadow: 2px 2px 5px #339999;
+    display: inline-block;
+    .form {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      p {
+        margin-top: 80px;
+        color: #339999;
+        text-align: center;
+        font-family: "Microsoft YaHei";
+      }
+      .el-input {
+        width: 300px;
+        margin-top: 30px;
+      }
+      .el-button {
+        width: 300px;
+        height: 40px;
+        background-color: #339999;
+        margin-top: 30px;
+      }
+      a {
+        text-decoration: none;
+        outline: none;
+        color: #339999;
+      }
+      .reg {
+        margin-right: 80px;
+      }
+      .forget {
+        margin-left: 105px;
+      }
+    }
+  }
 }
+
+
 
 
 

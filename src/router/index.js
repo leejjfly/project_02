@@ -5,6 +5,8 @@ import LeftNav from '@/components/LeftNav'
 import TopNav from '@/components/TopNav';
 import Home from '@/components/Home'
 import Index from '@/components/Index'
+import Top from '@/components/Index/Top'
+import PersonalInfo from "../components/Index/PersonalInfo";
 //使用Vue-Router插件
 Vue.use(Router);
 
@@ -38,6 +40,11 @@ const router= new Router({
       path: '/index',
       name: 'Index',
       component: Index
+    },
+    {
+      path: '/pi',
+      name: 'PersonalInfo',
+      component: PersonalInfo
     },
   ]
 });
