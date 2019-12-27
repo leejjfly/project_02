@@ -52,7 +52,7 @@
 
 <script>
     export default {
-        name: "left"
+        name: "LeftNav"
     }
 </script>
 
@@ -60,6 +60,7 @@
     .bgBox {
       background-color: #fff;
       border-radius: 5px;
+      border-top: 5px solid #10C899;
       /*margin-left: 377px;*/
       /*margin-bottom: 20px;*/
       width: 160px;

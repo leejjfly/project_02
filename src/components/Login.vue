@@ -91,7 +91,7 @@ export default {
      // let loginForm;
       if(this.loginForm.username==='admin'&&this.loginForm.password==='123456'){
         this.$message.success("登录成功");
-        this.$router.push('/topnav');
+        this.$router.push('/homepage');
       }else {
         this.$message.error("登录失败");
 

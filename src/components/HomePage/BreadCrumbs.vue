@@ -8,7 +8,15 @@
 
 <script>
     export default {
-        name: "BreadCrumbs"
+        name: "BreadCrumbs",
+      data(){
+          return{
+            menu:[
+              {firstMenu:''},
+              {secondMenu:''}
+            ]
+          }
+      }
     }
 </script>
 

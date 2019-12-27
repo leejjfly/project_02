@@ -20,7 +20,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   build: {
-    // Template for index.html
+    // Template for HomePage.html
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths

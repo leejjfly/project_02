@@ -3,10 +3,9 @@
       <TopNav></TopNav>
       <Top></Top>
       <BreadCrumbs></BreadCrumbs>
-      <div style="width: 1920px;display: flex;justify-content: space-between;padding: 0 337px;background-color:#eeeeee;">
-        <LeftNav style="width: 160px;">
-        </LeftNav>
-        <PersonalInfo></PersonalInfo>
+      <div class="main">
+        <LeftNav class="leftNav"></LeftNav>
+        <ThreeComponents class="threeComponents"></ThreeComponents>
       </div>
 
 
@@ -19,7 +18,7 @@
   import LeftNav from "../LeftNav";
   import Top from "@/components/HomePage/Top";
   import BreadCrumbs from "@/components/HomePage/BreadCrumbs";
-  import PersonalInfo from "@/components/HomePage/PersonalInfo";
+  import ThreeComponents from "@/components/HomePage/ThreeComponents";
     export default {
         name: "HomePage",
       data(){
@@ -31,11 +30,28 @@
 
       },
       components:{
-          TopNav,LeftNav,Top,BreadCrumbs,PersonalInfo
+          TopNav,LeftNav,Top,BreadCrumbs,ThreeComponents
       }
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+  .main{
+    width: 1920px;
+    height: 900px;
+    position: relative;
+    background-color: #eeeeee;
+    .leftNav{
+      width: 160px;
+      height: 728px;
+      position: absolute;
+      left: 377px;
+    }
+    .threeComponents{
+      width: 990px;
+      height: 728px;
+      position: absolute;
+      right: 373px;
+    }
+  }
 </style>

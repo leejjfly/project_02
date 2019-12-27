@@ -1,10 +1,10 @@
 <template>
   <div class="app">
-    <img src="../../assets/index/伊利.png" class="yili" alt="">
+    <img src="../../assets/HomePage/伊利.png" class="yili" alt="">
     <span class="yl" >中国伊利集团企业采购专柜</span>
-    <img src="../../assets/index/中秋.png" class="mid-aut" alt="">
+    <img src="../../assets/HomePage/中秋.png" class="mid-aut" alt="">
     <div class="s-c">
-      <img src="../../assets/index/购物车.png" class="shop-cart" alt="">
+      <img src="../../assets/HomePage/购物车.png" class="shop-cart" alt="">
       <span >购物车</span>
       <div><span class="num">3</span></div>
     </div>
@@ -26,14 +26,13 @@
   .yili{
     width: 60px;
     height: 60px;
-    margin-left: 396px;
+    margin-left: 376px;
     margin-top: 10px;
   }
   .yl{
     font-size: 14px;
     width: 84px;
     display: inline-block;
-    font-family: "Microsoft YaHei";
     position: relative;
     top: -20%;
     margin-left: 21px;
@@ -51,7 +50,7 @@
     height: 36px;
     position: relative;
     top: -23%;
-    margin-left: 53px;
+    margin-left: 40px;
     cursor: pointer;
     border-radius: 3px;
     .shop-cart{

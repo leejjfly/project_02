@@ -1,50 +1,33 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import LeftNav from '@/components/LeftNav'
-import TopNav from '@/components/TopNav';
-import Home from '@/components/Home'
-import Index from '@/components/HomePage/HomePage'
-// import Top from '@/components/HomePage/Top'
-import PersonalInfo from "../components/HomePage/PersonalInfo";
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from '@/components/Home';
+import HomePage from "../components/HomePage/HomePage";
+import AccountManage from "../components/HomePage/AccountManage";
+
 //使用Vue-Router插件
 Vue.use(Router);
 
+//引入ElementUI
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI);
+
 const router= new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   redirect:'/login'
-    // },
     {
       path:'/',
       name:'Home',
       component:Home
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '/homepage',
+      name: 'HomePage',
+      component: HomePage
     },
     {
-      path: '/leftnav',
-      name: 'LeftNav',
-      component: LeftNav
-    },
-    {
-      path: '/topnav',
-      name: 'TopNav',
-      component: TopNav
-    },
-    {
-      path: '/index',
-      name: 'Index',
-      component: Index
-    },
-    {
-      path: '/pi',
-      name: 'PersonalInfo',
-      component: PersonalInfo
+      path: '/accountmanage',
+      name: 'AccountManage',
+      component: AccountManage
     },
   ]
 });
