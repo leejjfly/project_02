@@ -19,6 +19,9 @@
   import Top from "@/components/HomePage/Top";
   import BreadCrumbs from "@/components/HomePage/BreadCrumbs";
   import ThreeComponents from "@/components/HomePage/ThreeComponents";
+  import AccountManage from "@/components/HomePage/AccountManage";
+  import UserGroupManage from "@/components/HomePage/UserGroupManage";
+  // import AccountManage from "./AccountManage";
     export default {
         name: "HomePage",
       data(){
@@ -30,6 +33,7 @@
 
       },
       components:{
+        AccountManage,
           TopNav,LeftNav,Top,BreadCrumbs,ThreeComponents
       }
     }

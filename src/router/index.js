@@ -17,12 +17,22 @@ const router= new Router({
     {
       path:'/',
       name:'Home',
-      component:Home
+      component:Home,
+      // children: [
+      //   {
+      //     path:'/homepage'
+      //   }
+      // ]
     },
     {
       path: '/homepage',
       name: 'HomePage',
-      component: HomePage
+      component: HomePage,
+      // children:[
+      //   {
+      //     path:'/homepage/'
+      //   }
+      // ]
     },
     {
       path: '/accountmanage',

@@ -12,64 +12,75 @@
       <div class="up">
         <img class="icon" src="../../assets/HomePage/地址.png" alt="" />
         <span>绑定地址</span>
-        <span class="num">3</span>
-        <span>查看</span>
+        <span class="num">{{personalInfo.bindingAddressNum}}</span>
+        <el-button type="text" class="el-button--text">查看</el-button>
       </div>
       <div class="down">
         <img class="icon" src="../../assets/HomePage/收藏.png" alt="" />
         <span>收藏商品</span>
-        <span class="num">3</span>
-        <span>查看</span>
+        <span class="num">{{personalInfo.favoriteProduct}}</span>
+        <el-button type="text" class="el-button--text">查看</el-button>
       </div>
     </div>
     <div class="second div">
       <div class="up">
         <img class="icon" src="../../assets/HomePage/月.png" alt="" />
         <span>月预算:</span>
-        <span>无</span>
+        <span>{{personalInfo.monthlyBudget}}</span>
       </div>
       <div class="down">
         <img class="icon" src="../../assets/HomePage/钱.png" alt="" />
         <span>已消费:</span>
-        <span class="num">￥8026元</span>
+        <span class="num">￥{{personalInfo.monthlyConsumed}}元</span>
       </div>
     </div>
     <div class="third div">
       <div class="up">
         <img class="icon" src="../../assets/HomePage/季.png" alt="" />
         <span>季预算:</span>
-        <span>无</span>
+        <span>{{personalInfo.quarterBudget}}</span>
       </div>
       <div class="down">
         <img class="icon" src="../../assets/HomePage/钱.png" alt="" />
         <span>已消费:</span>
-        <span class="num">￥80260元</span>
+        <span class="num">￥{{personalInfo.quarterConsumed}}元</span>
       </div>
     </div>
     <div class="fourth div">
       <div class="up">
         <img class="icon" src="../../assets/HomePage/年.png" alt="" />
         <span>年预算:</span>
-        <span>无</span>
+        <span>{{personalInfo.yearBudget}}</span>
       </div>
       <div class="down">
         <img class="icon" src="../../assets/HomePage/钱.png" alt="" />
         <span>已消费:</span>
-        <span class="num">￥908026元</span>
+        <span class="num">￥{{personalInfo.yearConsumed}}元</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: "PersonalInfo",
-  data() {
-    return {
-      data: [{}, {}]
-    };
-  }
-};
+  import userAvatar from "../../assets/HomePage/领先未来.png";
+  export default {
+    name: "PersonalInfo",
+    data() {
+      return {
+        personalInfo: {
+            bindingAddressNum:'3',
+            favoriteProduct:'3',
+            monthlyBudget:'无',
+            monthlyConsumed:'8026',
+            quarterBudget:'无',
+            quarterConsumed:'80260',
+            yearBudget:'无',
+            yearConsumed:'908026'
+          }
+
+      };
+    }
+  };
 </script>
 
 <style scoped lang="less">
@@ -103,6 +114,9 @@ export default {
     position: relative;
     top: -15%;
     left: 5%;
+    .el-button--text{
+      color: #2c2c2c;
+    }
     .down {
       margin-top: 5px;
     }

@@ -2,23 +2,45 @@
 <div class="orderBox">
   <div class="orderPreviewText">
     <span class="orderPreviewTextStyle">订单预览</span>
-    <button class="orderPreviewTextButton">查看全部订单</button>
+    <el-button type="text" class="el-button--text">查看全部订单</el-button>
   </div>
   <div class="orderItem">
-    <img src="../../assets/HomePage/MacBook.jpg" alt="">
-    <span class="goodsTitle">Apple MacBook Air 13.3英寸笔记本电脑MQD32CH/A赠Beats Solo3耳机【教育优惠套装】</span>
-    <span class="goodsQuantity">*1</span>
-    <span class="goodsOrigin">领先</span>
-    <span class="goodsPrice">￥5599.0</span>
-    <span class="goodsStatus">待收货</span>
+    <img :src="productInfo.src">
+    <span class="goodsTitle">{{productInfo.title}}</span>
+    <span class="goodsQuantity">*{{productInfo.quantity}}</span>
+    <span class="goodsOrigin">{{productInfo.origin}}</span>
+    <span class="goodsPrice">￥{{productInfo.price}}</span>
+    <span class="goodsStatus">{{productInfo.status}}</span>
+    <span class="check"><b>查看</b></span>
+  </div>
+  <div class="orderItem">
+    <img :src="productInfo.src">
+    <span class="goodsTitle">{{productInfo.title}}</span>
+    <span class="goodsQuantity">*{{productInfo.quantity}}</span>
+    <span class="goodsOrigin">{{productInfo.origin}}</span>
+    <span class="goodsPrice">￥{{productInfo.price}}</span>
+    <span class="goodsStatus">{{productInfo.status}}</span>
     <span class="check"><b>查看</b></span>
   </div>
 </div>
 </template>
 
 <script>
+  import src1 from "../../assets/HomePage/MacBook.jpg";
     export default {
-        name: "OrderPreview"
+      name: "OrderPreview",
+      data(){
+        return{
+          productInfo:{
+            src:src1,
+            title:'Apple MacBook Air 13.3英寸笔记本电脑MQD32CH/A赠Beats Solo3耳机【教育优惠套装】',
+            quantity:'1',
+            origin:'领先',
+            price:'5599.0',
+            status:'待收货'
+          }
+        }
+      }
     }
 </script>
 
@@ -40,7 +62,7 @@
         height: 30px;
         margin-left: 20px;
       }
-      .orderPreviewTextButton{
+      .el-button--text{
         width: 100px;
         height: 30px;
         margin-top:10px;
@@ -49,6 +71,7 @@
         border-radius: 3px;
         position: absolute;
         right: 5px;
+        color: #2c2c2c;
 
       }
     }
@@ -109,6 +132,7 @@
         margin-left: 840px;
         position: absolute;
         top: 20px;
+        cursor: pointer;
       }
 
     }

@@ -3,8 +3,8 @@
     <img src="../../assets/HomePage/伊利.png" class="yili" alt="">
     <span class="yl" >中国伊利集团企业采购专柜</span>
     <img src="../../assets/HomePage/中秋.png" class="mid-aut" alt="">
-    <div class="s-c">
-      <img src="../../assets/HomePage/购物车.png" class="shop-cart" alt="">
+    <div class="shopcart">
+      <img src="../../assets/HomePage/购物车.png" class="shopcartImg" alt="">
       <span >购物车</span>
       <div><span class="num">3</span></div>
     </div>
@@ -23,6 +23,7 @@
   height: 80px;
   width: 1920px;
   /*display: inline-block;*/
+  position: relative;
   .yili{
     width: 60px;
     height: 60px;
@@ -32,28 +33,31 @@
   .yl{
     font-size: 14px;
     width: 84px;
+    height: 40px;
     display: inline-block;
-    position: relative;
-    top: -20%;
+    position: absolute;
+    top: 20px;
     margin-left: 21px;
   }
   .mid-aut{
     height: 60px;
     width: 760px;
-    display: inline;
     margin-top: 10px;
     margin-left: 78px;
+    position: absolute;
+    left: 500px;
   }
-  .s-c{
+  .shopcart{
     background-color: #10C899;
     width: 116px;
     height: 36px;
     position: relative;
     top: -23%;
+    left: 950px;
     margin-left: 40px;
     cursor: pointer;
     border-radius: 3px;
-    .shop-cart{
+    .shopcartImg{
       width: 20px;
       height: 20px;
       margin-top: 8px;
@@ -71,11 +75,14 @@
       width: 15px;
       height: 15px;
       border-radius: 7.5px;
+      position: absolute;
       background-color: rgba(44,44,44,0.8);
-      margin-left: 5px;
+      top: 12px;
+      right: 12px;
       .num{
         position: relative;
-        top: -35%;
+        top: -5px;
+        right: 1px;
         color: white;
         font-size: 12px;
 

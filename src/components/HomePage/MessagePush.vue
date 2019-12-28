@@ -6,8 +6,12 @@
   </div>
   <div class="messagePushMain">
     <div class="messagePushContent">
-      <span class="messagePushContentTitle">有关领先未来后台详解，业务数据分析会议阿克苏</span>
-      <span class="messagePushContentDate">[11-21]</span>
+      <span class="messagePushContentTitle">{{news.title}}</span>
+      <span class="messagePushContentDate">[{{news.date}}]</span>
+    </div>
+    <div class="messagePushContent">
+      <span class="messagePushContentTitle">{{news.title}}</span>
+      <span class="messagePushContentDate">[{{news.date}}]</span>
     </div>
   </div>
 </div>
@@ -15,7 +19,15 @@
 
 <script>
     export default {
-        name: "MessagePush"
+      name: "MessagePush",
+      data(){
+        return{
+          news:{
+            title:'有关领先未来后台详解，业务数据分析会议阿克苏',
+            date:'11-21'
+          }
+        }
+      }
     }
 </script>
 

@@ -12,7 +12,7 @@
       <span class="accountManageSearchButtonText">搜索</span>
       <img src="../../assets/HomePage/search.png" class="img">
     </div>
-    <el-switch
+    <el-switch class="switch"
       v-model="value1"
       active-color="#10C899"
       inactive-color="#eee">
@@ -21,22 +21,43 @@
     <div class="addButton">
       <span class="addButtonText">添加+</span>
     </div>
-    <el-table
+    <el-table stripe="true" class="el-table"
       :data="tableData"
-      style="width: 100%">
+      style="width: 940px">
       <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
+        prop="account"
+        label="账号"
+        width="150px">
       </el-table-column>
       <el-table-column
         prop="name"
         label="姓名"
-        width="180">
+        width="80px">
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="地址">
+        prop="phone"
+        label="电话"
+        width="150px">
+      </el-table-column>
+      <el-table-column
+        prop="character"
+        label="角色"
+        width="80px">
+      </el-table-column>
+      <el-table-column
+        prop="userGroup"
+        label="用户组"
+        width="200px">
+      </el-table-column>
+      <el-table-column
+        prop="state"
+        label="状态"
+        width="80px">
+      </el-table-column>
+      <el-table-column
+        prop="manage"
+        label="操作"
+        width="200px">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -54,7 +75,18 @@
         name: "AccountManage",
       data(){
           return{
-            value1:''
+            value1:'',
+            tableData:[
+              {
+                account:'lxwl@163.com',
+                name:'刘阳',
+                phone:'18900999090',
+                character:'管理员',
+                userGroup:'部门：技术研发中心工区：新华国际广场A11',
+                state:'启用',
+                manage:''
+              }
+            ]
           }
       }
     }
@@ -81,6 +113,7 @@
     .accountManageSearch{
       width: 990px;
       height: 55px;
+      position: relative;
       .accountManageSearchText{
         font-size: 14px;
         display: inline-block;
@@ -112,6 +145,9 @@
           top: 8px;
         }
       }
+      .switch{
+        margin-left: 20px;
+      }
       .banOrNot{
         font-size: 14px;
       }
@@ -121,11 +157,19 @@
         height: 35px;
         border:1px solid  #10C899;
         border-radius: 3px;
+        position: absolute;
+        right: 0px;
         .addButtonText{
           color: #10C899;
           font-size: 14px;
+          display: inline-block;
+          margin-left: 17px;
+          margin-top: 7px;
         }
       }
+    }
+    .el-table th{
+      text-align: center;
     }
   }
 </style>
