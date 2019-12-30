@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Home from '@/components/Home';
 import HomePage from "../components/HomePage/HomePage";
 import AccountManage from "../components/HomePage/AccountManage";
+import Home1 from "../components/HomePage/ThreeComponents";
+import UserGroupManage from "../components/HomePage/UserGroupManage";
 
 //使用Vue-Router插件
 Vue.use(Router);
@@ -17,28 +19,37 @@ const router= new Router({
     {
       path:'/',
       name:'Home',
-      component:Home,
-      // children: [
-      //   {
-      //     path:'/homepage'
-      //   }
-      // ]
+      component:Home
     },
     {
       path: '/homepage',
       name: 'HomePage',
       component: HomePage,
-      // children:[
-      //   {
-      //     path:'/homepage/'
-      //   }
-      // ]
-    },
-    {
-      path: '/accountmanage',
-      name: 'AccountManage',
-      component: AccountManage
-    },
+      redirect:'/homepage/home1',
+      children:[
+        {
+          path:'/homepage/accountmanage',
+          name:'AccountManage',
+          component:AccountManage
+        },
+        {
+          path:'/homepage/home1',
+          name:'Home1',
+          component:Home1
+        },
+        {
+          path:'/homepage/usergroupmanage',
+          name:'UserGroupManage',
+          component:UserGroupManage
+        },
+        {
+          path:'/homepage/accountmanage',
+          name:'AccountManage',
+          component:AccountManage
+        },
+
+      ]
+    }
   ]
 });
 // //挂载路由导航守卫

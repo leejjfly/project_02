@@ -5,7 +5,9 @@
       <BreadCrumbs></BreadCrumbs>
       <div class="main">
         <LeftNav class="leftNav"></LeftNav>
-        <ThreeComponents class="threeComponents"></ThreeComponents>
+        <router-view class="rightMain">
+
+        </router-view>
       </div>
 
 
@@ -21,9 +23,8 @@
   import ThreeComponents from "@/components/HomePage/ThreeComponents";
   import AccountManage from "@/components/HomePage/AccountManage";
   import UserGroupManage from "@/components/HomePage/UserGroupManage";
-  // import AccountManage from "./AccountManage";
     export default {
-        name: "HomePage",
+      name: "HomePage",
       data(){
           return{
 
@@ -34,7 +35,7 @@
       },
       components:{
         AccountManage,
-          TopNav,LeftNav,Top,BreadCrumbs,ThreeComponents
+          TopNav,LeftNav,Top,BreadCrumbs
       }
     }
 </script>
@@ -51,7 +52,7 @@
       position: absolute;
       left: 377px;
     }
-    .threeComponents{
+    .rightMain{
       width: 990px;
       height: 728px;
       position: absolute;
