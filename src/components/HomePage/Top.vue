@@ -3,11 +3,14 @@
     <img src="../../assets/HomePage/伊利.png" class="yili" alt="">
     <span class="yl" >中国伊利集团企业采购专柜</span>
     <img src="../../assets/HomePage/中秋.png" class="mid-aut" alt="">
-    <div class="shopcart">
-      <img src="../../assets/HomePage/购物车.png" class="shopcartImg" alt="">
-      <span >购物车</span>
-      <div><span class="num">3</span></div>
-    </div>
+    <router-link to="/shoppingcart">
+      <div class="shopcart">
+        <img src="../../assets/HomePage/购物车.png" class="shopcartImg" alt="">
+        <span >购物车</span>
+        <div><span class="num">3</span></div>
+      </div>
+    </router-link>
+
   </div>
 
 </template>

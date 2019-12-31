@@ -4,15 +4,15 @@
       <li
         class="firstMenu"
         v-for="(firstMenu, index) in firstMenus"
-        :key="firstMenu.id"
-      >
+        :key="firstMenu.id">
         {{ firstMenu.title }}
         <ul>
           <li
             class="secondMenu"
             v-for="(data, index) in firstMenu.datas"
             :key="data.id"
-            @click="getRouter(data.router)">
+            @click="getRouter(data.router)"
+           >
             {{ data.title }}
           </li>
         </ul>
@@ -83,8 +83,12 @@ export default {
           ]
         }
       ],
-      active: ""
+      activePath: ''
     };
+  },
+  created(){
+    //组件在激活时的路由
+    // this.activePath=window.sessionStorage.getItem('activePath')
   },
   methods: {
     getRouter(name) {
@@ -92,7 +96,11 @@ export default {
     },
     selected(id) {
       this.active = id;
-    }
+    },
+    //页面刷新后还能获取路由状态
+    // saveNavState(){
+    //  window.sessionStorage.setItem('activePath',activePath)
+    // }
   }
 };
 </script>

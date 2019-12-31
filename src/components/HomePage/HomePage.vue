@@ -34,8 +34,7 @@
 
       },
       components:{
-        AccountManage,
-          TopNav,LeftNav,Top,BreadCrumbs
+        AccountManage, TopNav,LeftNav,Top,BreadCrumbs
       }
     }
 </script>

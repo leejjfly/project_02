@@ -5,6 +5,7 @@ import HomePage from "../components/HomePage/HomePage";
 import AccountManage from "../components/HomePage/AccountManage";
 import Home1 from "../components/HomePage/ThreeComponents";
 import UserGroupManage from "../components/HomePage/UserGroupManage";
+import ShoppingCart from "../components/ShoppingCart";
 
 //使用Vue-Router插件
 Vue.use(Router);
@@ -47,9 +48,13 @@ const router= new Router({
           name:'AccountManage',
           component:AccountManage
         },
-
       ]
-    }
+    },
+    {
+      path:'/shoppingcart',
+      name:'ShoppingCart',
+      component:ShoppingCart
+    },
   ]
 });
 // //挂载路由导航守卫

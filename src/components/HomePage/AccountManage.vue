@@ -5,26 +5,27 @@
     <span class="accountManageSearchText">账号搜索:</span>
     <el-input class="el-input"
       placeholder="请输入姓名或手机号"
-      v-model="searchText"
+      v-model="tableData.name"
       clearable>
     </el-input>
-    <div class="accountManageSearchButton">
+    <div class="accountManageSearchButton" @click="getTableData">
       <span class="accountManageSearchButtonText">搜索</span>
       <img src="../../assets/HomePage/search.png" class="img">
     </div>
     <el-switch class="switch"
-      v-model="value1"
+      v-model="banState"
       active-color="#10C899"
-      inactive-color="#eee">
+      inactive-color="#eee"
+      @change="banAccountVisible">
     </el-switch>
     <span class="banOrNot">是否显示禁用账号</span>
-    <div class="addButton">
-      <span class="addButtonText" @click="addUserVisible=true">添加+</span>
+    <div class="addButton"  @click="addUserVisible=true">
+      <span class="addButtonText">添加+</span>
     </div>
     <!--表格-->
-    <el-table :stripe="true" class="el-table"
+    <el-table :stripe="true" class="el-table" :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
       :data="tableData"
-      style="width: 970px">
+      style="width: 950px">
       <el-table-column
         prop="account"
         label="账号"
@@ -63,11 +64,11 @@
       <el-table-column
         prop="manage"
         label="操作"
-        width="220px">
+        width="200px">
         <template slot-scope="scope">
           <el-button type="text" style="color: #10C899;height: 30px;">移交</el-button>
           <el-button type="text" style="color: #10C899;height: 30px;">设置</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;">编辑</el-button>
+          <el-button type="text" style="color: #10C899;height: 30px;" @click="showEditDialog">编辑</el-button>
           <el-button type="text" style="color: #2c2c2c;height: 30px;">禁用</el-button>
           <el-button type="text" style="color: #10C899;height: 30px;">监管范围</el-button>
           <el-button type="text" style="color: #10C899;height: 30px;">通知方式</el-button>
@@ -77,42 +78,75 @@
     </el-table>
     <!--分页器-->
     <el-pagination class="el-pagination"
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :page-size="10"
+        :page-size="pageInfo.pageSize"
         prev-text="上一页"
         next-text="下一页"
         layout="total, prev, pager, next,jumper"
-        :total="100">
+        :total="pageInfo.total">
     </el-pagination>
   </div>
 <!--  添加新用户-->
   <el-dialog
     title="新建账号"
     :visible.sync="addUserVisible"
+    @close="addDialogClosed"
     width="50%">
 <!--    表单主体-->
     <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="100px">
       <el-form-item label="账号名" prop="accountName">
-        <el-input v-model="addUserForm.name"></el-input>
+        <el-input v-model="addUserForm.accountName"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="addUserForm.name"></el-input>
+        <el-input type="password" v-model="addUserForm.password"></el-input>
       </el-form-item>
       <el-form-item label="姓名" prop="username">
-        <el-input v-model="addUserForm.name"></el-input>
+        <el-input v-model="addUserForm.username"></el-input>
       </el-form-item>
       <el-form-item label="电话" prop="phoneNumber">
-        <el-input v-model="addUserForm.name"></el-input>
+        <el-input v-model="addUserForm.phoneNumber"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="addUserForm.name"></el-input>
+        <el-input v-model="addUserForm.email"></el-input>
       </el-form-item>
     </el-form>
 
     <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="addUser">提交</el-button>
     <el-button @click="addUserVisible = false">取 消</el-button>
-    <el-button type="primary" @click="addUserVisible = false">确 定</el-button>
+
+  </span>
+  </el-dialog>
+
+<!--  修改用户信息的对话框-->
+  <el-dialog
+    title="编辑账号"
+    :visible.sync="editDialogVisible"
+    @close="editDialogClosed"
+    width="50%">
+    <!--    表单主体-->
+    <el-form :model="editUserForm" :rules="editUserFormRules"  ref="editUserFormRef" label-width="100px">
+      <el-form-item label="账号名" prop="accountName">
+        <el-input v-model="editUserForm.accountName"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="editUserForm.password"></el-input><el-button>重置密码</el-button>
+      </el-form-item>
+      <el-form-item label="姓名" prop="username">
+        <el-input v-model="editUserForm.username"></el-input>
+      </el-form-item>
+      <el-form-item label="电话" prop="phoneNumber">
+        <el-input v-model="editUserForm.phoneNumber"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="editUserForm.email"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="editDialogVisible=false">提交</el-button>
+    <el-button @click="editDialogVisible = false">取 消</el-button>
+
   </span>
   </el-dialog>
 </div>
@@ -122,9 +156,30 @@
     export default {
         name: "AccountManage",
       data(){
+        //添加邮箱的验证规则
+        var checkEmail = (rule,value,cb)=>{
+          //验证邮箱的正则表达式
+          const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+          if(regEmail.test(value)){
+            //合法邮箱
+            return cb();
+          }
+          cb(new Error('请输入合法的邮箱'));
+        };
+        //添加手机号的验证规则
+        var checkPhoneNumber = (rule,value,cb)=>{
+          const regPhoneNumber=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+          if(regPhoneNumber.test(value)){
+            return cb();
+          }
+          cb(new Error('请输入合法的手机号'));
+        };
           return{
-            value1:'',
+            //el-switch的值
+            banState:'',
+            //搜索框的值
             searchText:null,
+            //表格的值
             tableData:[
               {
                 account:'lxwl@163.com',
@@ -147,26 +202,117 @@
                 manage:''
               }
             ],
-            currentPage:'1',
+            //分页器信息
+            pageInfo:{
+              currentPage:1,
+              pageSize:10,
+              total:100
+            },
+            //添加新用户的对话框
             addUserVisible:false,
-            addUserForm:{},
+            //添加新用户的表单
+            addUserForm:{
+              accountName:'',
+              password:'',
+              username:'',
+              phoneNumber:'',
+              email:''
+            },
             //添加用户表单的验证规则
             addUserFormRules:{
               username:[
                 {required:true,message:'请输入用户名',trigger:'blur'},
-                {min:3,max:10,message: '用户名在3~10个字符之间',trigger: 'blur'}
+                {min:2,max:10,message: '用户名在2~10个字符之间',trigger: 'blur'}
+              ],
+              password:[
+                {required:true,message:'请输入密码',trigger:'blur'},
+                {min:6,max:20,message: '用户名在5~20个字符之间',trigger: 'blur'}
+              ],
+              accountName:[
+                {required:true,message:'请输入账号',trigger:'blur'}
+              ],
+              phoneNumber:[
+                {required:true,message:'请输入手机号码',trigger:'blur'},
+                {validator:checkPhoneNumber,trigger: 'blur'}
+              ],
+              email:[
+                {required:true,message:'请输入邮箱',trigger:'blur'},
+                {validator:checkEmail,trigger: 'blur'}
+              ]
+            },
+            //控制编辑用户信息的对话框
+            editDialogVisible:false,
+            editUserForm:{
+              accountName:'',
+              password:'',
+              username:'',
+              phoneNumber:'',
+              email:''
+            },
+            //编辑用户信息的校验规则
+            editUserFormRules:{
+              username:[
+                {required:true,message:'请输入用户名',trigger:'blur'},
+                {min:2,max:10,message: '用户名在2~10个字符之间',trigger: 'blur'}
+              ],
+              password:[
+                {required:true,message:'请输入密码',trigger:'blur'},
+                {min:6,max:20,message: '用户名在5~20个字符之间',trigger: 'blur'}
+              ],
+              accountName:[
+                {required:true,message:'请输入账号',trigger:'blur'}
+              ],
+              phoneNumber:[
+                {required:true,message:'请输入手机号码',trigger:'blur'},
+                {validator:checkPhoneNumber,trigger: 'blur'}
+              ],
+              email:[
+                {required:true,message:'请输入邮箱',trigger:'blur'},
+                {validator:checkEmail,trigger: 'blur'}
               ]
             }
 
           }
       },
       methods:{
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
+          //是否显示禁用状态的账号
+        banAccountVisible(banState){
+          console.log(banState)
         },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
-        }
+        //查询表格中的数据
+        getTableData(tableData){
+          console.log(tableData);
+        },
+        //分页器的当前页
+        handleCurrentChange(currentPage) {
+          console.log(`当前页: ${currentPage}`);
+        },
+        //点击取消关闭对话框
+        addDialogClosed(){
+          this.$refs.addUserFormRef.resetFields();
+        },
+        //点击添加按钮，添加新用户
+        addUser(){
+          this.$refs.addUserFormRef.validate(valid=>{
+            if(!valid) return;
+            //表单预校验成功
+            this.tableData=this.tableData||[];
+            this.tableData.push({
+              account:this.tableData.accountName,
+              name:this.tableData.username,
+              phone:this.tableData.phoneNumber
+            })
+          });
+          this.addUserVisible = false;
+        },
+        //展示编辑用户信息的对话框
+        showEditDialog(){
+          this.editDialogVisible=true;
+        },
+        //点击取消编辑用户信息的对话框
+        editDialogClosed(){
+          this.$refs.editUserFormRef.resetFields();
+        },
       }
     }
 </script>
@@ -238,7 +384,7 @@
         border:1px solid  #10C899;
         border-radius: 3px;
         position: absolute;
-        right: 0px;
+        right: 20px;
         cursor: pointer;
         .addButtonText{
           color: #10C899;

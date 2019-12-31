@@ -11,7 +11,7 @@
     <span class="goodsOrigin">{{productInfo.origin}}</span>
     <span class="goodsPrice">￥{{productInfo.price}}</span>
     <span class="goodsStatus">{{productInfo.status}}</span>
-    <span class="check"><b>查看</b></span>
+    <span class="check">查看</span>
   </div>
   <div class="orderItem">
     <img :src="productInfo.src">
@@ -20,7 +20,7 @@
     <span class="goodsOrigin">{{productInfo.origin}}</span>
     <span class="goodsPrice">￥{{productInfo.price}}</span>
     <span class="goodsStatus">{{productInfo.status}}</span>
-    <span class="check"><b>查看</b></span>
+    <span class="check">查看</span>
   </div>
 </div>
 </template>
@@ -129,6 +129,7 @@
         display: inline-block;
         width: 40px;
         height: 40px;
+        color: #2c2c2c;
         margin-left: 840px;
         position: absolute;
         top: 20px;

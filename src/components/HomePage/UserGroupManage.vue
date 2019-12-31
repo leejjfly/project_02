@@ -21,42 +21,58 @@
         </div>
       </div>
     </div>
+    <!--      表格跟树-->
     <div class="tableTree">
-      <el-table class="el-table" :data="tableData" stripe>
-        <el-table-column prop="id" label="序号" width="100px">
-        </el-table-column>
-        <el-table-column prop="name" label="名称" width="180px">
-        </el-table-column>
-        <el-table-column
-          prop="usingPeopleAmount"
-          label="使用人数"
-          width="100px"
-        >
-        </el-table-column>
-        <el-table-column prop="operate" label="操作" width="180px">
-          <template>
-            <el-button type="text">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-tree class="el-tree"
-        :data="treeData"
-        show-checkbox
-        node-key="id"
-        :default-expanded-keys="[2, 3]"
-        :props="defaultProps"
-      >
-      </el-tree>
+<!--      表格-->
+      <div class="table">
+        <el-table class="el-table" :data="tableData" stripe :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}">
+          <el-table-column prop="id" label="序号" width="100px">
+          </el-table-column>
+          <el-table-column prop="name" label="名称" width="180px">
+          </el-table-column>
+          <el-table-column
+            prop="usingPeopleAmount"
+            label="使用人数"
+            width="100px"
+          >
+          </el-table-column>
+          <el-table-column prop="operate" label="操作" width="180px">
+            <template>
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+<!--      树-->
+      <div class="tree">
+        <p><span>组织架构</span></p>
+        <div class="el-tree-button">
+          <el-tree class="el-tree"
+                   :data="treeData"
+                   show-checkbox
+                   node-key="id"
+                   :default-expanded-keys="[2, 3]"
+                   :props="defaultProps">
+          </el-tree>
+          <div class="button">
+            <img src="../../assets/HomePage/increase.png" alt="">
+            <img src="../../assets/HomePage/delete.png" alt="">
+            <img src="../../assets/HomePage/xiugai.png" alt="">
+            <img src="../../assets/HomePage/chakan.png" alt="">
+
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="el-pagSave">
       <el-pagination class="el-pagination"
-                     @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :page-size="10"
+                     :page-size="pageInfo.pageSize"
                      prev-text="上一页"
                      next-text="下一页"
                      layout="total, prev, pager, next,jumper"
-                     :total="100">
+                     :total="pageInfo.total">
       </el-pagination>
       <div class="saveButton">
         <span class="saveButtonText">
@@ -156,15 +172,19 @@ export default {
         children: 'children',
         label: 'label'
       },
-      currentPage:'1',
+      //分页器信息
+      pageInfo:{
+        currentPage:1,
+        pageSize:10,
+        total:100
+      }
+
     };
   },
   methods: {
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    handleCurrentChange(newPage) {
+      console.log(`当前页: ${newPage}`);
+      this.pageInfo.currentPage=newPage;
     }
   }
 };
@@ -242,21 +262,59 @@ export default {
     width: 950px;
     height: 538px;
     position: relative;
-    .el-table {
+    .table{
       width: 562px;
       height: 538px;
       display: inline-block;
-      margin-left: 20px;
-      position: absolute;
+      .el-table {
+        width: 562px;
+        height: 538px;
+        margin-left: 20px;
+      }
     }
-    .el-tree{
-      display: inline-block;
-      width: 300px;
+    .tree{
+      width: 410px;
       height: 538px;
+      display: inline-block;
       position: absolute;
-      top: 0px;
-      right: 0px;
+      top:0px;
+      background-color: #f9f9f9;
+      p{
+        width: 410px;
+        height: 48px;
+        margin: 0px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #909399;
+        background-color: #eeeeee;
+        span{
+          display: inline-block;
+          margin-left: 20px;
+          margin-top: 14px;
+        }
+      }
+      .el-tree-button{
+        width: 410px;
+        height: 484px;
+        display: flex;
+        .el-tree{
+          width: 200px;
+          height: 484px;
+          background-color: #f9f9f9;
+        }
+        .button{
+          width: 210px;
+          height: 434px;
+          margin-top: 30px;
+          img{
+            width: 15px;
+            height: 15px;
+          }
+        }
+      }
+
     }
+
   }
   .el-pagSave{
     width: 990px;
@@ -272,10 +330,15 @@ export default {
       height: 35px;
       display: block;
       background-color: #10c899;
+      margin-right: 20px;
+      border-radius: 3px;
+      cursor: pointer;
       .saveButtonText{
         font-size: 14px;
         color: #2c2c2c;
-        vertical-align: middle;
+        display: inline-block;
+        margin-left: 5px;
+        margin-top: 5px;
       }
     }
   }
