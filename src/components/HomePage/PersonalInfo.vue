@@ -3,7 +3,7 @@
     <div class="tx">
       <img
         class="txtp"
-        src="../../assets/HomePage/领先未来.png"
+        :src="personalInfo.src1"
         alt="用户头像"
       />
       <span>lxwl123</span>
@@ -68,6 +68,7 @@
     data() {
       return {
         personalInfo: {
+          src1:userAvatar,
             bindingAddressNum:'3',
             favoriteProduct:'3',
             monthlyBudget:'无',

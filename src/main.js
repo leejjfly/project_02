@@ -8,6 +8,9 @@ import ElementUI, {Message} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/global.css'
 
+//导入vuex的store
+import store from "./store";
+
 import axios from 'axios'
 //配置请求的根路径
 Vue.prototype.$http=axios;
@@ -21,6 +24,7 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 });

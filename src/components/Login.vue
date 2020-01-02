@@ -88,15 +88,30 @@ export default {
       // });
 
 
+     // window.localStorage.setItem('name',{
+     //   users:[
+     //     {username:'wang',password:11},
+     //     {username:'li',password:11},
+     //     {username:'liu',password:11},
+     //     {username:'zhao',password:11},
+     //   ]
+     // });
+
      // let loginForm;
-      if(this.loginForm.username==='admin'&&this.loginForm.password==='123456'){
+     //  if(JSON.parse(window.localStorage.getItem(('name'))).users.includes({username:this.loginForm.username,password:this.loginForm.password})){
+     //    this.$message.success("登录成功");
+     //    window.localStorage.setItem('user',JSON.stringify({username:this.loginForm.username,password:this.loginForm.password}))
+     //    this.$router.push('/homepage');
+     //  }else {
+     //    this.$message.error("登录失败");
+     //
+     //  }
+      if(this.loginForm.username=='admin'&&this.loginForm.password=='123456'){
         this.$message.success("登录成功");
         this.$router.push('/homepage');
-      }else {
+      }else{
         this.$message.error("登录失败");
-
       }
-
     }
   }
 };

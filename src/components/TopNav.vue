@@ -8,7 +8,9 @@
 <!--    登录-->
     <div class="login">
       <img src="../assets/TopNav/登录.png" alt="" />
-      <a href="#">登录</a>
+      <router-link to="/home">
+        登录
+      </router-link>
     </div>
 <!--    企业中心-->
     <div class="enterpriseCenter">

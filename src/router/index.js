@@ -1,4 +1,5 @@
 import Vue from 'vue';
+
 import Router from 'vue-router';
 import Home from '@/components/Home';
 import HomePage from "../components/HomePage/HomePage";
@@ -6,9 +7,12 @@ import AccountManage from "../components/HomePage/AccountManage";
 import Home1 from "../components/HomePage/ThreeComponents";
 import UserGroupManage from "../components/HomePage/UserGroupManage";
 import ShoppingCart from "../components/ShoppingCart";
+import Goods from "../components/Goods";
 
 //使用Vue-Router插件
 Vue.use(Router);
+
+
 
 //引入ElementUI
 import ElementUI from 'element-ui'
@@ -55,14 +59,27 @@ const router= new Router({
       name:'ShoppingCart',
       component:ShoppingCart
     },
+    {
+      path:'/goods',
+      name:'Goods',
+      component:Goods
+    }
   ]
 });
 // //挂载路由导航守卫
-// router.beforeEach((to,from,next)={
-//   if(to.path==='/login') return next();
-//   //获取token
-//   const tokenStr=window.sessionStorage.getItem('token')
-//   if(!tokenStr) return next('/login')
-//   next()
-// })
+// 路由守卫
+// router.beforeEach((to,from,next)=>{
+//     if (window.localStorage.getItem('user')) {
+//       next();
+//     }else{
+//       next({
+//         path:"/login",
+//         query:{
+//           redirect:to.fullPath
+//         }
+//       });
+//     }
+//
+// });
+
 export default router

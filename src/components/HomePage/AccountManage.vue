@@ -298,9 +298,9 @@
             //表单预校验成功
             this.tableData=this.tableData||[];
             this.tableData.push({
-              account:this.tableData.accountName,
-              name:this.tableData.username,
-              phone:this.tableData.phoneNumber
+              account:this.addUserForm.accountName,
+              name:this.addUserForm.username,
+              phone:this.addUserForm.phoneNumber
             })
           });
           this.addUserVisible = false;

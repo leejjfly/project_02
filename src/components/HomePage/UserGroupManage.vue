@@ -38,6 +38,9 @@
           </el-table-column>
           <el-table-column prop="operate" label="操作" width="180px">
             <template>
+              <span>
+                {{tableData.operate}}
+              </span>
               <el-button type="text">删除</el-button>
             </template>
           </el-table-column>

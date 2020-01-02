@@ -3,15 +3,17 @@
     <ul>
       <li
         class="firstMenu"
+        :style="{color:active==firstMenu.title?'#10c899':''}"
         v-for="(firstMenu, index) in firstMenus"
         :key="firstMenu.id">
         {{ firstMenu.title }}
         <ul>
           <li
             class="secondMenu"
+            :style="{color:active==data.title?'#10c899':''}"
             v-for="(data, index) in firstMenu.datas"
             :key="data.id"
-            @click="getRouter(data.router)"
+            @click="getRouter(data.router,data.title)"
            >
             {{ data.title }}
           </li>
@@ -26,6 +28,7 @@ export default {
   name: "LeftNav",
   data() {
     return {
+      active:'首页',
       firstMenus: [
         { id: 1, title: "首页", datas: [] },
         {
@@ -91,7 +94,8 @@ export default {
     // this.activePath=window.sessionStorage.getItem('activePath')
   },
   methods: {
-    getRouter(name) {
+    getRouter(name,title) {
+      this.active=title;
       this.$router.push(name);
     },
     selected(id) {
