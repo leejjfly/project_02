@@ -28,9 +28,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state:{
-    tableData:[
+    counterGoods:[
       {
-        checked:true,
         checkState:'',
         goodsImg:src1,
         goodsInfo:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色) 商品编号:33944',
@@ -39,7 +38,6 @@ const store = new Vuex.Store({
         totalPrice:null
       },
       {
-        checked:true,
         checkState:'',
         goodsImg:src1,
         goodsInfo:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色) 商品编号:33944',
@@ -48,10 +46,31 @@ const store = new Vuex.Store({
         totalPrice:null
       },
     ],
+    nonCounterGoods:[
+      {
+        checkState:'',
+        goodsImg:src1,
+        goodsInfo:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色) 商品编号:33944',
+        unitPrice:10.5,
+        quantity:20,
+        totalPrice:null
+      },
+      {
+        checkState:'',
+        goodsImg:src1,
+        goodsInfo:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色) 商品编号:33944',
+        unitPrice:10.6,
+        quantity:100,
+        totalPrice:null
+      },
+    ],
   },
   getters:{
-    getAdd:function (state) {
-      return state.tableData
+    getCounterGoods:function (state) {
+      return state.counterGoods
+    },
+    getNonCounterGoods:function (state) {
+      return state.nonCounterGoods
     }
   },
   mutations:{

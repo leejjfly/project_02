@@ -7,7 +7,9 @@ import AccountManage from "../components/HomePage/AccountManage";
 import Home1 from "../components/HomePage/ThreeComponents";
 import UserGroupManage from "../components/HomePage/UserGroupManage";
 import ShoppingCart from "../components/ShoppingCart";
-import Goods from "../components/Goods";
+import Goods from "../components/HomePage/Goods";
+
+import test from "../components/test";
 
 //使用Vue-Router插件
 Vue.use(Router);
@@ -52,6 +54,11 @@ const router= new Router({
           name:'AccountManage',
           component:AccountManage
         },
+        {
+          path:'/homepage/goods',
+          name:'Goods',
+          component:Goods
+        },
       ]
     },
     {
@@ -59,10 +66,10 @@ const router= new Router({
       name:'ShoppingCart',
       component:ShoppingCart
     },
+
     {
-      path:'/goods',
-      name:'Goods',
-      component:Goods
+      path:'/test',
+      component:test
     }
   ]
 });

@@ -42,9 +42,9 @@
 <style scoped lang="less">
   .main{
     width: 1920px;
-    height: 900px;
+    height: 1200px;
     position: relative;
-    background-color: #eeeeee;
+    background-color: #f6f6f6;
     .leftNav{
       width: 160px;
       height: 728px;
@@ -53,7 +53,7 @@
     }
     .rightMain{
       width: 990px;
-      height: 728px;
+      /*height: 1048px;*/
       position: absolute;
       right: 373px;
     }

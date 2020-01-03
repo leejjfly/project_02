@@ -38,7 +38,7 @@ export default {
             {
               id: 1,
               title: "专柜商品库",
-              router: { name: "countergoodslibrary" }
+              router: { name: "Goods" }
             },
             { id: 2, title: "收藏商品" }
           ]

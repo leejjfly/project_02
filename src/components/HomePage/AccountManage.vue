@@ -321,7 +321,7 @@
   .accountBox{
     width: 990px;
     height: 728px;
-    background-color: #fff;
+    background-color:#ffffff;
     .accountManage{
       width: 990px;
       height: 50px;

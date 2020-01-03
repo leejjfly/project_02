@@ -35,7 +35,7 @@
   /*  }*/
   /*}*/
   .breadBox{
-    background-color: #eeeeee;
+    background-color: #f6f6f6;
     width: 1920px;
     height: 30px;
     position: relative;

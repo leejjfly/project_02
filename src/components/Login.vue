@@ -52,7 +52,7 @@ export default {
     return {
       //这是登录表单的用户名跟密码
       loginForm: {
-        username: "admin",
+        username: "lxwl123",
         password: "123456"
       },
       //这是表单的验证规则对象
@@ -106,7 +106,7 @@ export default {
      //    this.$message.error("登录失败");
      //
      //  }
-      if(this.loginForm.username=='admin'&&this.loginForm.password=='123456'){
+      if(this.loginForm.username=='lxwl123'&&this.loginForm.password=='123456'){
         this.$message.success("登录成功");
         this.$router.push('/homepage');
       }else{

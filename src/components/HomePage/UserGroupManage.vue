@@ -284,7 +284,7 @@ export default {
       background-color: #f9f9f9;
       p{
         width: 410px;
-        height: 48px;
+        height: 46px;
         margin: 0px;
         font-size: 14px;
         font-weight: bold;
