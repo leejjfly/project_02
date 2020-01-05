@@ -42,7 +42,7 @@
      </div>
    </div>
 <!--   筛选排序-->
-    <div class="orderBy">
+   <div class="orderBy">
 <!--      默认排序-->
       <span class="orderByDefault">默认</span>
       <span class="orderBySales">销量</span>
@@ -53,12 +53,38 @@
       <el-input class="highPrice" placeholder="最高价"></el-input>
       <el-button class="confirm">确定</el-button>
     </div>
+<!--  商品-->
+   <div class="goodsLibrary">
+     <div class="goods" :data="goods">
+       <img class="goodsImg" :src="goods.src" alt="">
+       <div class="price">
+         <span class="counterPrice">￥{{goods.counterPrice}}</span>
+         <span class="counter">专柜价</span>
+         <span class="officialPrice">官网价：</span>
+         <span class="official">￥300.00</span>
+       </div>
+       <div class="title">
+         三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)
+       </div>
+       <div class="bottom">
+         <span class="sales">销量：100</span>
+         <div class="favorite">
+           <img  class="img" src="../../assets/HomePage/收藏.png" alt="">
+           <span class="addToFavorites">收藏</span>
+         </div>
+         <div class="shop">
+           <img class="img" src="../../assets/HomePage/购物车.png" alt="">
+           <span class="addToShoppingCart">加入购物车</span>
+         </div>
 
-
+       </div>
+     </div>
+   </div>
  </div>
 </template>
 
 <script>
+  import goods from '../../assets/HomePage/三菱.jpg';
   export default {
     name: "Goods",
     data(){
@@ -96,6 +122,16 @@
           {id:10,title:'替芯'},
           {id:11,title:'记号笔'},
           {id:12,title:'铅笔'}
+        ],
+        goods:[
+          {id:1,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:2,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:3,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:4,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:5,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:6,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:7,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
+          {id:8,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100}
         ]
       }
     }
@@ -205,16 +241,22 @@
       }
     }
     .orderBy{
-      height: 80px;
-      background-color: #10C899;
+      height: 40px;
+      position: relative;
       .orderByDefault{
-
+        font-size: 14px;
+        color: #2c2c2c;
+        margin-left: 20px;
       }
       .orderBySales{
-
+        font-size: 14px;
+        color: #2c2c2c;
+        margin-left: 20px;
       }
       .orderByPrice{
-
+        font-size: 14px;
+        color: #2c2c2c;
+        margin-left: 20px;
       }
       .upArrow{
         display: inline-block;
@@ -223,6 +265,8 @@
         border-right: 5px solid transparent;
         border-left: 5px solid transparent;
         border-bottom: 8px solid #dfdbdb;
+        position: absolute;
+        top: 10px;
       }
       .downArrow{
         display: inline-block;
@@ -231,18 +275,102 @@
         border-left:5px solid transparent;
         border-right: 5px solid transparent;
         border-top:8px solid #dfdbdb;
+        position: absolute;
+        top: 20px;
       }
       .lowPrice{
         width: 80px;
         height: 24px;
+        margin-left: 20px;
       }
       .highPrice{
         width: 80px;
         height: 24px;
+        margin-left: 20px;
       }
       .confirm{
-        width: 60px;
+        width: 80px;
         height: 40px;
+        margin-left: 20px;
+      }
+    }
+    .goodsLibrary{
+      width: 990px;
+      height: 560px;
+      .goods{
+        width: 240px;
+        height: 270px;
+        .goodsImg{
+          width: 220px;
+          height: 170px;
+          margin-left: 10px;
+        }
+        .price{
+          width: 240px;
+          height: 30px;
+          .counterPrice{
+            font-size: 18px;
+            color: #FE5E41;
+          }
+          .counter{
+            font-size: 12px;
+          }
+          .official{
+            font-size: 12px;
+            color: #9a9a9a;
+          }
+          .officialPrice{
+            font-size: 12px;
+            color: #9a9a9a;
+          }
+        }
+        .title{
+          width: 205px;
+          height: 40px;
+          font-size: 14px;
+        }
+        .bottom{
+          width: 240px;
+          height: 32px;
+          .sales{
+            font-size: 12px;
+            display: inline-block;
+            width: 70px;
+          }
+
+          .favorite{
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            .img{
+              width: 20px;
+              height: 20px;
+              position: absolute;
+              bottom: 0px;
+            }
+            .addToFavorites{
+              font-size: 12px;
+              margin-left: 20px;
+
+            }
+          }
+          .shop{
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            .img{
+              width: 20px;
+              height: 20px;
+              position: absolute;
+              bottom: 0px;
+            }
+            .addToShoppingCart{
+              font-size: 12px;
+              margin-left: 20px;
+            }
+          }
+
+        }
       }
     }
   }
