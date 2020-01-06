@@ -13,6 +13,7 @@ const store = new Vuex.Store({
   state:{
     userName: sessionStorage.getItem('userName')? '您好,'+sessionStorage.getItem('userName'): '登录' ,
     formData:localStorage.getItem('account')? localStorage.getItem('account') : [] ,
+    totalPrice:sessionStorage.getItem('totalPrice')?sessionStorage.getItem('totalPrice'):0,
     counterGoods:[
       {
         id:1,
@@ -137,7 +138,9 @@ const store = new Vuex.Store({
     setUserName(state,userName) {
       sessionStorage.setItem('userName',userName)
     },
-
+    setTotalPrice(state,totalPrice){
+      sessionStorage.setItem('totalPrice',totalPrice)
+    }
 
   },
   actions:{

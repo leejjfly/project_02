@@ -15,7 +15,7 @@
       <el-table
       :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
       :data="$store.getters.getCounterGoods"
-
+      @selection-change="handleSelectionChange"
       style="width: 100%">
       <el-table-column
         type="selection"
@@ -142,7 +142,7 @@
       <span class="exportInfo">导出商品信息</span>
       <span class="selected">已选<span class="num">1</span>件商品</span>
       <span class="totalPrice">总价:</span>
-      <span class="num totalPriceNum">￥1030</span>
+      <span class="num totalPriceNum">￥{{totalPrice}}</span>
       <el-button class="submitOrder">提交订单</el-button>
     </div>
 
@@ -181,6 +181,7 @@
 </template>
 
 <script>
+  import { mapMutations,mapState } from 'vuex';
   import TopNav from "./TopNav";
   export default {
     name: "ShoppingCart",
@@ -194,6 +195,8 @@
     },
 
     methods:{
+      ...mapMutations(['setTotalPrice']),
+      ...mapState(['totalPrice']),
       handleChange(value){
         console.log(value);
       },
@@ -201,9 +204,21 @@
         this.tableData=this.tableData.splice(index,1);
         this.$store.commit('add',this.tableData)
       },
-      select(){
+      // select(){
+      //
+      // }
+      handleSelectionChange(val) {
+        this.multipleSelection = val;//相当于选中了哪一行或者哪几行
+        console.log(val);
+        var a=0;
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          a += this.multipleSelection[i].unitPrice * this.multipleSelection[i].quantity;
+        }
+        this.totalPrice=a;
+        this.$store.state.totalPrice=a;
+        console.log('totalPrice='+this.$store.state.totalPrice)
+      },
 
-      }
 
     }
   }
