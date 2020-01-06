@@ -15,13 +15,12 @@
       <el-table
       :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
       :data="$store.getters.getCounterGoods"
-      height="310"
+
       style="width: 100%">
       <el-table-column
         type="selection"
         width="80"
-        label="全选"
-        fill="#10C899">
+        label="全选">
       </el-table-column>
 
       <el-table-column
@@ -75,65 +74,65 @@
     </el-table>
 
 <!--      非专柜商品-->
-      <el-table
-        :data="$store.getters.getNonCounterGoods"
-        :cell-style="{textAlign:'center'}"
-        height="310"
-        style="width: 100%">
-        <el-table-column
-          width="80">
-          <template>
-            <el-checkbox v-model="checkState"></el-checkbox>
-          </template>
-        </el-table-column>
+<!--      <el-table-->
+<!--        :data="$store.getters.getNonCounterGoods"-->
+<!--        :cell-style="{textAlign:'center'}"-->
+<!--        height="310"-->
+<!--        style="width: 100%">-->
+<!--        <el-table-column-->
+<!--          width="80">-->
+<!--          <template>-->
+<!--            <el-checkbox></el-checkbox>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-        <el-table-column
-          prop="goodsInfo"
-          class="goodsInfo">
-          <template slot="header">
-            以下为非专柜商品
-          </template>
-          <template slot-scope="scope">
-            <img class="img" :src="scope.row.goodsImg" alt="">
-            <span class="goodsText"> {{scope.row.goodsInfo}}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column-->
+<!--          prop="goodsInfo"-->
+<!--          class="goodsInfo">-->
+<!--          <template slot="header">-->
+<!--            以下为非专柜商品-->
+<!--          </template>-->
+<!--          <template slot-scope="scope">-->
+<!--            <img class="img" :src="scope.row.goodsImg" alt="">-->
+<!--            <span class="goodsText"> {{scope.row.goodsInfo}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-        <el-table-column
-          prop="unitPrice"
-          width="170">
-          <template slot-scope="scope">
-            <span>￥</span>
-            <span>{{scope.row.unitPrice}}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column-->
+<!--          prop="unitPrice"-->
+<!--          width="170">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>￥</span>-->
+<!--            <span>{{scope.row.unitPrice}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-        <el-table-column
-          prop="quantity"
-          width="180">
-          <template slot-scope="scope">
-            <el-input-number  size="mini" v-model="scope.row.quantity" @change="handleChange" :min="1" :max="10000" label="数量"></el-input-number>
-          </template>
-        </el-table-column>
+<!--        <el-table-column-->
+<!--          prop="quantity"-->
+<!--          width="180">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-input-number  size="mini" v-model="scope.row.quantity" @change="handleChange" :min="1" :max="10000" label="数量"></el-input-number>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-        <el-table-column
-          prop="totalPrice"
-          width="200">
-          <template slot-scope="scope">
-            <span>￥</span>
-            <span>{{(scope.row.unitPrice*scope.row.quantity).toFixed(2)}}</span>
-          </template>
-        </el-table-column>
+<!--        <el-table-column-->
+<!--          prop="totalPrice"-->
+<!--          width="200">-->
+<!--          <template slot-scope="scope">-->
+<!--            <span>￥</span>-->
+<!--            <span>{{(scope.row.unitPrice*scope.row.quantity).toFixed(2)}}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-        <el-table-column
-          prop="operation"
-          width="100">
-          <template slot-scope="scope">
-            <el-button type="text" class="addToFavorites">加入收藏</el-button>
-            <el-button type="text" @click="del(scope.$index)" class="del">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+<!--        <el-table-column-->
+<!--          prop="operation"-->
+<!--          width="100">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button type="text" class="addToFavorites">加入收藏</el-button>-->
+<!--            <el-button type="text" @click="del(scope.$index)" class="del">删除</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--      </el-table>-->
     </div>
 
 <!--    购物车底部-->
@@ -183,8 +182,6 @@
 
 <script>
   import TopNav from "./TopNav";
-  // import {mapGetters} from 'vuex';
-  // import {mapMutations} from 'vuex';
   export default {
     name: "ShoppingCart",
     data(){
@@ -204,13 +201,10 @@
         this.tableData=this.tableData.splice(index,1);
         this.$store.commit('add',this.tableData)
       },
+      select(){
 
-      // this.setShoppingCart(){
-      //
-      // }
-      // ...mapMutations({
-      //   setShoppingCart:'setShoppingCart'
-      // })
+      }
+
     }
   }
 </script>
@@ -255,7 +249,6 @@
    .shoppingCart{
      width: 1170px;
      height: 620px;
-     background-color: #10c899;
      margin: 0 auto;
      .img{
        width: 80px;
@@ -291,6 +284,7 @@
        position: absolute;
        top: 10px;
        left: 100px;
+       cursor: pointer;
      }
      .exportInfo{
        font-size: 14px;
@@ -298,6 +292,7 @@
        position: absolute;
        top: 10px;
        left: 220px;
+       cursor: pointer;
      }
      .selected{
        font-size: 14px;

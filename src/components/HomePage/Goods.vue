@@ -24,21 +24,21 @@
    <div class="brands">
      <span class="front">品牌:</span>
      <div class="behind">
-       <span class="span" v-for="brand in brands" :key="brand.id">{{brand.title}}</span>
+       <span class="span"  v-for="brand in getBrands" :key="brand.id">{{brand.title}}</span>
      </div>
    </div>
 <!--   颜色-->
    <div class="colors">
      <span class="front">颜色:</span>
      <div class="behind">
-       <span class="span"  v-for="color in colors" :key="color.id">{{color.title}}</span>
+       <span class="span"  v-for="color in getColors" :key="color.id">{{color.title}}</span>
      </div>
    </div>
 <!--类型-->
    <div class="types">
      <span class="front">类型:</span>
      <div class="behind">
-       <span class="span"  v-for="type in types" :key="type.id">{{type.title}}</span>
+       <span class="span" v-for="type in getTypes" :key="type.id">{{type.title}}</span>
      </div>
    </div>
 <!--   筛选排序-->
@@ -55,19 +55,19 @@
     </div>
 <!--  商品-->
    <div class="goodsLibrary">
-     <div class="goods" :data="goods">
-       <img class="goodsImg" :src="goods.src" alt="">
+     <div class="goods"  v-for="good in getGoods">
+       <img class="goodsImg" :src="good.src" alt="">
        <div class="price">
-         <span class="counterPrice">￥{{goods.counterPrice}}</span>
+         <span class="counterPrice">￥{{good.counterPrice}}</span>
          <span class="counter">专柜价</span>
          <span class="officialPrice">官网价：</span>
-         <span class="official">￥300.00</span>
+         <span class="official">￥{{good.officialPrice}}</span>
        </div>
        <div class="title">
-         三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)
+         {{good.title}}
        </div>
        <div class="bottom">
-         <span class="sales">销量：100</span>
+         <span class="sales">销量：{{good.sales}}</span>
          <div class="favorite">
            <img  class="img" src="../../assets/HomePage/收藏.png" alt="">
            <span class="addToFavorites">收藏</span>
@@ -84,55 +84,17 @@
 </template>
 
 <script>
-  import goods from '../../assets/HomePage/三菱.jpg';
+
+
+  import { mapGetters } from 'vuex'
   export default {
     name: "Goods",
+    computed: {
+      ...mapGetters(['getBrands','getColors','getTypes','getGoods'])
+    },
     data(){
       return{
-        brands:[
-          {id:1,title:'新秀丽(Samsonite)'},
-          {id:2,title:'途明(TUMI)'},
-          {id:3,title:'晨光'},
-          {id:4,title:'惠普'},
-          {id:5,title:'齐心'},
-          {id:6,title:'得力'},
-          {id:7,title:'新秀丽(Samsonite)'},
-          {id:8,title:'惠普'},
-          {id:9,title:'途明(TUMI)'},
-          {id:10,title:'晨光'},
-          {id:11,title:'惠普'},
-          {id:12,title:'齐心'}
-        ],
-        colors:[
-          {id:1,title:'黑色'},
-          {id:2,title:'红色'},
-          {id:3,title:'白色'},
-          {id:4,title:'绿色'},
-        ],
-        types:[
-          {id:1,title:'中性笔'},
-          {id:2,title:'替芯'},
-          {id:3,title:'记号笔'},
-          {id:4,title:'铅笔'},
-          {id:5,title:'中性笔'},
-          {id:6,title:'替芯'},
-          {id:7,title:'记号笔'},
-          {id:8,title:'铅笔'},
-          {id:9,title:'中性笔'},
-          {id:10,title:'替芯'},
-          {id:11,title:'记号笔'},
-          {id:12,title:'铅笔'}
-        ],
-        goods:[
-          {id:1,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:2,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:3,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:4,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:5,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:6,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:7,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100},
-          {id:8,src:goods,counterPrice:280.00,officialPrice:300.00,title:'三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)',sales:100}
-        ]
+
       }
     }
   }
@@ -300,6 +262,7 @@
       .goods{
         width: 240px;
         height: 270px;
+        display: inline-block;
         .goodsImg{
           width: 220px;
           height: 170px;
@@ -363,10 +326,12 @@
               height: 20px;
               position: absolute;
               bottom: 0px;
+              left: -10px;
             }
             .addToShoppingCart{
               font-size: 12px;
-              margin-left: 20px;
+              margin-left: 10px;
+              cursor: pointer;
             }
           }
 

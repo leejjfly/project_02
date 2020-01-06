@@ -54,8 +54,12 @@
                    :data="treeData"
                    show-checkbox
                    node-key="id"
-                   :default-expanded-keys="[2, 3]"
+                   default-expand-all
+                   :expand-on-click-node="false"
                    :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+             <span>{{ node.label }}</span>
+            </span>
           </el-tree>
           <div class="button">
             <img src="../../assets/HomePage/increase.png" alt="">
@@ -91,6 +95,66 @@
 export default {
   name: "UserGroupManage",
   data() {
+    const treeData = [
+      {
+        id: 1,
+        label: "集团总部（128人）",
+        children: [
+          {
+            id: 2,
+            label: "总经办",
+            children: [
+              {
+                id: 4,
+                label: "风控管理中心"
+              },
+              {
+                id: 5,
+                label: "发展研究院"
+              }
+            ]
+          },
+          {
+            id: 3,
+            label: "技术研发中心",
+            children: [
+              {
+                id: 6,
+                label: "风控管理中心"
+              },
+              {
+                id: 7,
+                label: "发展研究院"
+              },
+              {
+                id: 8,
+                label: "风控管理中心"
+              },
+              {
+                id: 9,
+                label: "发展研究院"
+              },
+              {
+                id: 10,
+                label: "风控管理中心"
+              },
+              {
+                id: 11,
+                label: "发展研究院"
+              },
+              {
+                id: 12,
+                label: "风控管理中心"
+              },
+              {
+                id: 13,
+                label: "发展研究院"
+              }
+            ]
+          }
+        ]
+      }
+    ]
     return {
       searchText: '',
       tableData: [
@@ -111,66 +175,7 @@ export default {
           usingPeopleAmount: "200"
         }
       ],
-      treeData: [
-        {
-          id: 1,
-          label: "集团总部（128人）",
-          children: [
-            {
-              id: 2,
-              label: "总经办",
-              children: [
-                {
-                  id: 4,
-                  label: "风控管理中心"
-                },
-                {
-                  id: 5,
-                  label: "发展研究院"
-                }
-              ]
-            },
-            {
-              id: 3,
-              label: "技术研发中心",
-              children: [
-                {
-                  id: 6,
-                  label: "风控管理中心"
-                },
-                {
-                  id: 7,
-                  label: "发展研究院"
-                },
-                {
-                  id: 8,
-                  label: "风控管理中心"
-                },
-                {
-                  id: 9,
-                  label: "发展研究院"
-                },
-                {
-                  id: 10,
-                  label: "风控管理中心"
-                },
-                {
-                  id: 11,
-                  label: "发展研究院"
-                },
-                {
-                  id: 12,
-                  label: "风控管理中心"
-                },
-                {
-                  id: 13,
-                  label: "发展研究院"
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      treeData: JSON.parse(JSON.stringify(treeData)),
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -188,6 +193,13 @@ export default {
     handleCurrentChange(newPage) {
       console.log(`当前页: ${newPage}`);
       this.pageInfo.currentPage=newPage;
+    },
+    append(data,parentNode){
+      const newChild = { id: id++, label: "test", children: [] };
+      if (!data.children) {
+        this.$set(data, "children", []);
+      }
+      data.children.push(newChild);
     }
   }
 };

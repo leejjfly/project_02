@@ -8,9 +8,9 @@
 <!--    登录-->
     <div class="login">
       <img src="../assets/TopNav/登录.png" alt="" />
-      <router-link to="/home">
-        登录
-      </router-link>
+      <span v-if="userName">
+        {{userName}}
+      </span>
     </div>
 <!--    企业中心-->
     <div class="enterpriseCenter">
@@ -29,12 +29,20 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
 export default {
   name: "TopNav",
+  computed: {
+    ...mapState(['userName']),
+  },
+  // beforeCreate() {
+  //   setTimeout(this.$store.getters.getUserName(),100);
+  // },
   methods: {
     logout() {
       window.sessionStorage.clear();
-      this.$router.push("/login");
+      this.$router.push("/");
+      this.$router.go(0);
     }
   }
 };

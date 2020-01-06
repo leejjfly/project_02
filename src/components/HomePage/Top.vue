@@ -7,7 +7,7 @@
       <div class="shopcart">
         <img src="../../assets/HomePage/购物车.png" class="shopcartImg" alt="">
         <span >购物车</span>
-        <div><span class="num">3</span></div>
+        <div><span class="num">{{getGoodsAmount}}</span></div>
       </div>
     </router-link>
 
@@ -16,8 +16,13 @@
 </template>
 
 <script>
+  import {mapState,mapGetters,mapMutations} from 'vuex';
     export default {
-        name: "Top"
+        name: "Top",
+      methods:{
+          ...mapState(['']),
+          ...mapGetters(['getGoodsAmount'])
+      }
     }
 </script>
 

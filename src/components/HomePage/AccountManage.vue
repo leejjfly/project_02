@@ -5,7 +5,7 @@
     <span class="accountManageSearchText">账号搜索:</span>
     <el-input class="el-input"
       placeholder="请输入姓名或手机号"
-      v-model="tableData.name"
+      v-model="searchText"
       clearable>
     </el-input>
     <div class="accountManageSearchButton" @click="getTableData">
@@ -62,7 +62,6 @@
         width="80px">
       </el-table-column>
       <el-table-column
-        prop="manage"
         label="操作"
         width="200px">
         <template slot-scope="scope">
@@ -91,7 +90,7 @@
     title="新建账号"
     :visible.sync="addUserVisible"
     @close="addDialogClosed"
-    width="50%">
+    width="40%">
 <!--    表单主体-->
     <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef" label-width="100px">
       <el-form-item label="账号名" prop="accountName">
@@ -123,9 +122,9 @@
     title="编辑账号"
     :visible.sync="editDialogVisible"
     @close="editDialogClosed"
-    width="50%">
+    width="40%">
     <!--    表单主体-->
-    <el-form :model="editUserForm" :rules="editUserFormRules"  ref="editUserFormRef" label-width="100px">
+    <el-form :model="editUserForm" :rules="editUserFormRules"  ref="editUserFormRef" label-width="100px" class="editDialog">
       <el-form-item label="账号名" prop="accountName">
         <el-input v-model="editUserForm.accountName"></el-input>
       </el-form-item>
@@ -153,11 +152,12 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex';
     export default {
         name: "AccountManage",
       data(){
         //添加邮箱的验证规则
-        var checkEmail = (rule,value,cb)=>{
+        let checkEmail = (rule,value,cb)=>{
           //验证邮箱的正则表达式
           const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
           if(regEmail.test(value)){
@@ -167,7 +167,7 @@
           cb(new Error('请输入合法的邮箱'));
         };
         //添加手机号的验证规则
-        var checkPhoneNumber = (rule,value,cb)=>{
+        let checkPhoneNumber = (rule,value,cb)=>{
           const regPhoneNumber=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
           if(regPhoneNumber.test(value)){
             return cb();
@@ -178,7 +178,7 @@
             //el-switch的值
             banState:'',
             //搜索框的值
-            searchText:null,
+            searchText:'',
             //表格的值
             tableData:[
               {
@@ -189,17 +189,15 @@
                 userGroup1:'部门：技术研发中心',
                 userGroup2:'工区：新华国际广场A11',
                 state:'启用',
-                manage:''
               },
               {
-                account:'lxwl@163.com',
-                name:'刘阳',
-                phone:'18900999090',
+                account:'lxwl123@163.com',
+                name:'李想',
+                phone:'18812341234',
                 character:'管理员',
                 userGroup1:'部门：技术研发中心',
                 userGroup2:'工区：新华国际广场A11',
                 state:'启用',
-                manage:''
               }
             ],
             //分页器信息
@@ -279,10 +277,7 @@
         banAccountVisible(banState){
           console.log(banState)
         },
-        //查询表格中的数据
-        getTableData(tableData){
-          console.log(tableData);
-        },
+
         //分页器的当前页
         handleCurrentChange(currentPage) {
           console.log(`当前页: ${currentPage}`);
@@ -297,6 +292,9 @@
             if(!valid) return;
             //表单预校验成功
             this.tableData=this.tableData||[];
+            window.localStorage.setItem("account",this.addUserForm.accountName);
+            window.localStorage.setItem("name",this.addUserForm.username);
+            window.localStorage.setItem("phone",this.addUserForm.phoneNumber);
             this.tableData.push({
               account:this.addUserForm.accountName,
               name:this.addUserForm.username,
@@ -308,11 +306,34 @@
         //展示编辑用户信息的对话框
         showEditDialog(){
           this.editDialogVisible=true;
+
         },
         //点击取消编辑用户信息的对话框
         editDialogClosed(){
           this.$refs.editUserFormRef.resetFields();
         },
+        // ...mapState(['formData'])
+
+
+        //查询表格中的数据
+        getTableData() {
+          let searchText = this.searchText;
+          let tableData = this.tableData;
+          if (!searchText) {
+            return tableData;
+          }
+          searchText=searchText.trim().toLowerCase();
+
+          tableData=tableData.filter(function (item) {
+            if(item.name.toLowerCase().indexOf(searchText)!==-1){
+              return item;
+            }
+          });
+          return tableData;
+        }
+      },
+      computed:{
+
       }
     }
 </script>
@@ -404,5 +425,14 @@
       position: absolute;
       right: 0px;
     }
+    /*.editDialog{*/
+    /*  width: 500px;*/
+    /*  el-input{*/
+    /*    width: 500px;*/
+    /*  }*/
+    /*  el-button{*/
+    /*    display: inline-block;*/
+    /*  }*/
+    /*}*/
   }
 </style>

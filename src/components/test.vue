@@ -1,92 +1,298 @@
 <template>
   <div>
-    <el-table
-      :data="tableData"
-      :span-method="arraySpanMethod"
-      border
-      style="width: 100%">
-      <el-table-column
-        prop="id"
-        label="ID"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        prop="amount1"
-        sortable
-        label="数值 1">
-      </el-table-column>
-      <el-table-column
-        prop="amount2"
-        sortable
-        label="数值 2">
-      </el-table-column>
-      <el-table-column
-        prop="amount3"
-        sortable
-        label="数值 3">
-      </el-table-column>
-    </el-table>
+    <div class="dormitory">
+      <div class="searchWord">
+        <div style="display: inline-block">搜索：</div>
+        <el-input
+          v-model="search"
+          style="display: inline-block;width: 1300px"
+          placeholder="请输入搜索内容"
+        >
+        </el-input>
+      </div>
+      // 遍历表格
+      <div class="dormitoryData">
+        <el-table
+          ref="dormitoryTable"
+          :data="tables"
+          tooltip-effect="dark"
+          stripe
+          style="width: 100%"
+        >
+          <el-table-column type="selection" width="45"></el-table-column>
+          <el-table-column
+            label="序号"
+            type="index"
+            width="65"
+          ></el-table-column>
+          <el-table-column label="人物" prop="people"> </el-table-column>
+          <el-table-column label="关系" prop="relationship"> </el-table-column>
+          <el-table-column label="初见" prop="meet"> </el-table-column>
+          <el-table-column label="地点" prop="place"> </el-table-column>
+          <el-table-column label="昵称" prop="execg"> </el-table-column>
+          <el-table-column label="认识年限" prop="year"> </el-table-column>
+          <el-table-column label="成名之作" prop="works"> </el-table-column>
+        </el-table>
+      </div>
+    </div>
+
+    <div class="dd" @click="local">
+      {{ app }}
+    </div>
+
+    <div class="custom-tree-container">
+      <div class="block">
+        <p>使用 scoped slot</p>
+        <el-tree class="el-tree"
+                 :data="treeData"
+                 show-checkbox
+                 node-key="id"
+                 default-expand-all
+                 :expand-on-click-node="false"
+                 :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+             <span>{{ node.label }}</span>
+            </span>
+        </el-tree>
+        <div class="button">
+          <img src="../assets/HomePage/increase.png" alt="" @click="append(data)">
+          <img src="../assets/HomePage/delete.png" alt="">
+          <img src="../assets/HomePage/xiugai.png" alt="">
+          <img src="../assets/HomePage/chakan.png" alt="">
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-    export default {
-        name: "test",
-      data(){
-          return{
-            tableData: [{
-              id: '12987122',
-              name: '王小虎',
-              amount1: '234',
-              amount2: '3.2',
-              amount3: 10
-            }, {
-              id: '12987123',
-              name: '王小虎',
-              amount1: '165',
-              amount2: '4.43',
-              amount3: 12
-            }, {
-              id: '12987124',
-              name: '王小虎',
-              amount1: '324',
-              amount2: '1.9',
-              amount3: 9
-            }, {
-              id: '12987125',
-              name: '王小虎',
-              amount1: '621',
-              amount2: '2.2',
-              amount3: 17
-            }, {
-              id: '12987126',
-              name: '王小虎',
-              amount1: '539',
-              amount2: '4.1',
-              amount3: 15
-            }]
-          }
-      },
-      methods:{
-        arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-          if (rowIndex=== 3) {
-            if (columnIndex === 0) {
-              return [1, 2];
+let id = 1000;
+export default {
+  name: "test",
+  props:['treeDataObj','isUserMgt'],//父级传值 与判断哪个tree
+  data() {
+    const treeData= [
+        {
+          id: 1,
+          label: "集团总部（128人）",
+          children: [
+            {
+              id: 2,
+              label: "总经办",
+              children: [
+                {
+                  id: 4,
+                  label: "风控管理中心"
+                },
+                {
+                  id: 5,
+                  label: "发展研究院"
+                }
+              ]
+            },
+            {
+              id: 3,
+              label: "技术研发中心",
+              children: [
+                {
+                  id: 6,
+                  label: "风控管理中心"
+                },
+                {
+                  id: 7,
+                  label: "发展研究院"
+                },
+                {
+                  id: 8,
+                  label: "风控管理中心"
+                },
+                {
+                  id: 9,
+                  label: "发展研究院"
+                },
+                {
+                  id: 10,
+                  label: "风控管理中心"
+                },
+                {
+                  id: 11,
+                  label: "发展研究院"
+                },
+                {
+                  id: 12,
+                  label: "风控管理中心"
+                },
+                {
+                  id: 13,
+                  label: "发展研究院"
+                }
+              ]
             }
-            else if (columnIndex === 4) {
-              return [0, 3];
-            }
-          }
+          ]
         }
+      ];
+    return {
+      app: "",
+      treeData: JSON.parse(JSON.stringify(treeData)),
+      dormitory: [
+        {
+          people: "雷森",
+          relationship: "大学室友",
+          meet: "2010-09-02",
+          place: "图书馆",
+          execg: "胖子",
+          year: "8年",
+          works: "海阔天空"
+        },
+        {
+          people: "刘利伟",
+          relationship: "大学室友",
+          meet: "2010-09-02",
+          place: "5#633",
+          execg: "老大",
+          year: "8年",
+          works: "勇气"
+        },
+        {
+          people: "李金龙",
+          relationship: "大学室友",
+          meet: "2010-09-02",
+          place: "5#633",
+          execg: "二哥",
+          year: "8年",
+          works: "遇见"
+        },
+        {
+          people: "马康",
+          relationship: "大学室友",
+          meet: "2010-09-02",
+          place: "餐饮大厦",
+          execg: "康哥",
+          year: "8年",
+          works: "不再联系"
+        },
+        {
+          people: "牛光卫",
+          relationship: "大学室友",
+          meet: "2010-09-02",
+          place: "图书馆",
+          execg: "牛牛娃",
+          year: "8年",
+          works: "断点"
+        },
+        {
+          people: "陆兆攀",
+          relationship: "大学室友",
+          meet: "1991-07-27",
+          place: "百浪",
+          execg: "帅哥",
+          year: "27年",
+          works: "不再犹豫"
+        },
+        {
+          people: "小甜",
+          relationship: "亲密的人",
+          meet: "2016-10-05",
+          place: "小寨",
+          execg: "甜甜圈",
+          year: "2年",
+          works: "Forever Love"
         }
+      ],
+      search: "",
+      expandedKey:[],//展开节点
+      checkedID:''//选中节点
 
+    };
+  },
+  methods: {
+    local() {
+      if (!window.localStorage) {
+        alert("浏览器不支持localstorage");
+      } else {
+        let storage = window.localStorage;
+        let data = {
+          username: "lxwl123",
+          password: "123456"
+        };
+        let d = JSON.stringify(data);
+        storage.setItem("data", d);
+        JSON.parse(d);
+        console.log(d.username);
+        this.app = JSON.parse(storage.data);
+      }
+    },
+    append(data) {
+      const newChild = { id: id++, label: "testtest", children: [] };
+      if (!data.children) {
+        this.$set(data, "children", []);
+      }
+      data.children.push(newChild);
+    },
+
+    remove(node, data) {
+      const parent = node.parent;
+      const children = parent.data.children || parent.data;
+      const index = children.findIndex(d => d.id === data.id);
+      children.splice(index, 1);
+    },
+
+  },
+  computed: {
+    // 模糊搜索
+    tables() {
+      const search = this.search;
+      if (search) {
+        // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+        // 注意： filter() 不会对空数组进行检测。
+        // 注意： filter() 不会改变原始数组。
+        return this.dormitory.filter(data => {
+          // some() 方法用于检测数组中的元素是否满足指定条件;
+          // some() 方法会依次执行数组的每个元素：
+          // 如果有一个元素满足条件，则表达式返回true , 剩余的元素不会再执行检测;
+          // 如果没有满足条件的元素，则返回false。
+          // 注意： some() 不会对空数组进行检测。
+          // 注意： some() 不会改变原始数组。
+          return Object.keys(data).some(key => {
+            // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
+            // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(search) > -1
+            );
+          });
+        });
+      }
+      return this.dormitory;
     }
+  }
+};
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.dd {
+  width: 500px;
+  height: 300px;
+  background-color: #10c899;
+}
+.el-tree{
+  width: 200px;
+  height: 484px;
+  background-color: #f9f9f9;
+  display: inline-block;
+}
+.button{
+  width: 210px;
+  height: 434px;
+  margin-top: 30px;
+  display: inline-block;
+img{
+  width: 15px;
+  height: 15px;
+}
+}
 
 </style>

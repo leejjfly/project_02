@@ -46,6 +46,7 @@
 </template>
 
 <script>
+  import { mapMutations } from 'vuex';
 export default {
   name: "Login",
   data() {
@@ -71,6 +72,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['setUserName']),
     //表单数据验证
     login() {
       // this.$refs.loginFormRef.validate(async valid => {
@@ -97,7 +99,7 @@ export default {
      //   ]
      // });
 
-     // let loginForm;
+
      //  if(JSON.parse(window.localStorage.getItem(('name'))).users.includes({username:this.loginForm.username,password:this.loginForm.password})){
      //    this.$message.success("登录成功");
      //    window.localStorage.setItem('user',JSON.stringify({username:this.loginForm.username,password:this.loginForm.password}))
@@ -107,8 +109,12 @@ export default {
      //
      //  }
       if(this.loginForm.username=='lxwl123'&&this.loginForm.password=='123456'){
+        this.setUserName(this.loginForm.username);
+        // this.$store.commit("setUserName",this.loginForm.username);
         this.$message.success("登录成功");
+
         this.$router.push('/homepage');
+        this.$router.go(0);
       }else{
         this.$message.error("登录失败");
       }

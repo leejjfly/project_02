@@ -1,6 +1,10 @@
 
 import src1 from "../../assets/HomePage/三菱.jpg";
 import Vuex from "vuex";
+import Vue from 'vue';
+
+Vue.use(Vuex);
+
 
 // const state = {
 //   shoppingCart:[
