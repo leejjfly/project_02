@@ -109,12 +109,10 @@ export default {
      //
      //  }
       if(this.loginForm.username=='lxwl123'&&this.loginForm.password=='123456'){
-        this.setUserName(this.loginForm.username);
-        // this.$store.commit("setUserName",this.loginForm.username);
+        //this.setUserName(this.loginForm.username);
+        window.sessionStorage.setItem("username",this.loginForm.username);
         this.$message.success("登录成功");
-
         this.$router.push('/homepage');
-        this.$router.go(0);
       }else{
         this.$message.error("登录失败");
       }

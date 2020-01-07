@@ -11,11 +11,13 @@
       </router-link>
     </div>
     <div class="shoppingCart">
+      <p v-if="!$store.state.shoppingCart.counterGoods.length">购物车空空如也!</p>
 <!--      专柜商品-->
       <el-table
       :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
-      :data="$store.getters.getCounterGoods"
+      :data="$store.state.shoppingCart.counterGoods"
       @selection-change="handleSelectionChange"
+
       style="width: 100%">
       <el-table-column
         type="selection"
@@ -48,7 +50,7 @@
         label="数量"
         width="180">
         <template slot-scope="scope">
-          <el-input-number  size="mini" v-model="scope.row.quantity" @change="handleChange" :min="1" :max="10000" label="数量"></el-input-number>
+          <el-input-number  size="mini" v-model="scope.row.quantity" @change="handleChange(scope.row)" :min="1" :max="10000" label="数量"></el-input-number>
         </template>
       </el-table-column>
 
@@ -140,9 +142,9 @@
       <el-checkbox class="check">全选</el-checkbox>
       <span class="del">删除选中的商品</span>
       <span class="exportInfo">导出商品信息</span>
-      <span class="selected">已选<span class="num">1</span>件商品</span>
+      <span class="selected">已选<span class="num">{{selectedRow}}</span>件商品</span>
       <span class="totalPrice">总价:</span>
-      <span class="num totalPriceNum">￥{{totalPrice}}</span>
+      <span class="num totalPriceNum">￥{{sum.toFixed(2)}}</span>
       <el-button class="submitOrder">提交订单</el-button>
     </div>
 
@@ -181,43 +183,64 @@
 </template>
 
 <script>
-  import { mapMutations,mapState } from 'vuex';
+  import { mapMutations,mapState,mapGetters} from 'vuex';
   import TopNav from "./TopNav";
   export default {
     name: "ShoppingCart",
     data(){
       return{
-
+        sum:0,
+        selectedRow:0,
+        rowPrice:0,
       }
     },
     components:{
       TopNav
     },
+    computed: {
+      ...mapState(['counterGoods','totalPrice']),
 
+    },
     methods:{
-      ...mapMutations(['setTotalPrice']),
-      ...mapState(['totalPrice']),
-      handleChange(value){
-        console.log(value);
+      ...mapMutations(['setTotalPrice','getTotalPrice']),
+      handleSelectionChange:function(val) {
+        this.multipleSelection = val;//相当于选中了哪一行或者哪几行
+        this.sum=0;
+        this.selectedRow=1;
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          this.selectedRow++;
+          this.sum+= this.multipleSelection[i].unitPrice * this.multipleSelection[i].quantity;
+        }
+         this.$store.commit('getTotalPrice',this.sum);
       },
+      //商品数量改变
+      // handleChange(cur){
+      //   if(!this.multipleSelection.length){
+      //     return
+      //   }else{
+      //     this.sum=0;
+      //     for (let i = 0; i < this.multipleSelection.length; i++) {
+      //       this.sum+= this.multipleSelection[i].unitPrice * cur;
+      //     }
+      //     console.log(this.sum);
+      //   }
+      //
+      // },
+
+      handleChange(data) {
+        console.log(data);
+        this.sum=0;
+        for(let i=0;i<this.multipleSelection.length;i++){
+          this.sum+=data.quantity*data.unitPrice;
+        }
+        console.log(this.sum);
+      },
+      //删除购物车里所选中的物品
       del(index){
         this.tableData=this.tableData.splice(index,1);
         this.$store.commit('add',this.tableData)
       },
-      // select(){
-      //
-      // }
-      handleSelectionChange(val) {
-        this.multipleSelection = val;//相当于选中了哪一行或者哪几行
-        console.log(val);
-        var a=0;
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          a += this.multipleSelection[i].unitPrice * this.multipleSelection[i].quantity;
-        }
-        this.totalPrice=a;
-        this.$store.state.totalPrice=a;
-        console.log('totalPrice='+this.$store.state.totalPrice)
-      },
+
 
 
     }
@@ -323,7 +346,7 @@
        font-size: 14px;
        display: inline-block;
        position: absolute;
-       right: 200px;
+       right: 220px;
        top: 10px;
      }
      .totalPriceNum{

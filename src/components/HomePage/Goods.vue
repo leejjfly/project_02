@@ -24,21 +24,21 @@
    <div class="brands">
      <span class="front">品牌:</span>
      <div class="behind">
-       <span class="span"  v-for="brand in getBrands" :key="brand.id">{{brand.title}}</span>
+       <span class="span"  v-for="(brand,index) in this.$store.state.goodsLibrary.brands" :key="brand.id">{{brand.title}}</span>
      </div>
    </div>
 <!--   颜色-->
    <div class="colors">
      <span class="front">颜色:</span>
      <div class="behind">
-       <span class="span"  v-for="color in getColors" :key="color.id">{{color.title}}</span>
+       <span class="span"  v-for="(color,index) in this.$store.state.goodsLibrary.colors" :key="color.id">{{color.title}}</span>
      </div>
    </div>
 <!--类型-->
    <div class="types">
      <span class="front">类型:</span>
      <div class="behind">
-       <span class="span" v-for="type in getTypes" :key="type.id">{{type.title}}</span>
+       <span class="span" v-for="(type,index) in this.$store.state.goodsLibrary.types" :key="type.id">{{type.title}}</span>
      </div>
    </div>
 <!--   筛选排序-->
@@ -55,7 +55,7 @@
     </div>
 <!--  商品-->
    <div class="goodsLibrary">
-     <div class="goods"  v-for="good in getGoods">
+     <div class="goods"  v-for="(good,index) in this.$store.state.goodsLibrary.goods">
        <img class="goodsImg" :src="good.src" alt="">
        <div class="price">
          <span class="counterPrice">￥{{good.counterPrice}}</span>
@@ -86,11 +86,11 @@
 <script>
 
 
-  import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
   export default {
     name: "Goods",
     computed: {
-      ...mapGetters(['getBrands','getColors','getTypes','getGoods'])
+      ...mapState(['brands','colors','types','goods'])
     },
     data(){
       return{
