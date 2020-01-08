@@ -320,16 +320,21 @@
           let searchText = this.searchText;
           let tableData = this.tableData;
           if (!searchText) {
-            return tableData;
+            // return tableData;
+            this.tableData=[];
           }
+
           searchText=searchText.trim().toLowerCase();
 
           tableData=tableData.filter(function (item) {
-            if(item.name.toLowerCase().indexOf(searchText)!==-1){
-              return item;
-            }
+            // if(item.name.toLowerCase().indexOf(searchText)!==-1){
+            //   return item;
+            // }
+            return !item.name.toLowerCase().indexOf(searchText)
           });
+          this.tableData=tableData;
           return tableData;
+
         }
       },
       computed:{

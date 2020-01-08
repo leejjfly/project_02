@@ -40,80 +40,115 @@ const state = {
     { id: 11, title: "记号笔" },
     { id: 12, title: "铅笔" }
   ],
-  goods: [
-    {
-      id: 1,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 2,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 3,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 4,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 5,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 6,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 7,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    },
-    {
-      id: 8,
-      src: goods,
-      counterPrice: 280.0,
-      officialPrice: 300.0,
-      title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
-      sales: 100
-    }
-  ]
+  // goods: [
+  //   {
+  //     id: 1,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 2,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 3,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 4,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 5,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 6,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 7,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   },
+  //   {
+  //     id: 8,
+  //     src: goods,
+  //     counterPrice: 280.0,
+  //     officialPrice: 300.0,
+  //     title: "三菱(Uni)0.5mm UB-150直液式耐水性签字笔(红色)",
+  //     sales: 100
+  //   }
+  // ],
+  // added:[]
 };
-const getters = {};
+const getters = {
+
+};
 const mutations = {
-  addGoods:function (state,info) {
-   console.log(info);
+  //加入购物车
+  ADD_GOODS:function (state,{id}) {
+   let record = state.added.find(item => item.id==id);
+   if(!record){
+     state.added.push({
+       id,
+       //购物车里的商品数量
+       num:1
+     })
+   }else{
+     record.num++
+   }
+  },
+  //购物车商品数量改变
+  NUM_CHANGE(state,{id,value}){
+    state.added.forEach((item,index)=>{
+      if(item.id==id){
+        item.quantity=value;
+      }
+    })
   }
 };
-const actions = {};
+const actions = {
+  //加入购物车
+  addGoods({commit},product){
+    commit('ADD_GOODS',{
+      id:product.id
+    })
+  },
+  //商品数量变化
+  numChange({commit},data){
+    commit('NUM_CHANGE',{
+      id:data.id,
+      value:data.value
+    })
+  }
+};
 
 export default {
   state,

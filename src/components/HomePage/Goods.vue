@@ -55,7 +55,7 @@
     </div>
 <!--  商品-->
    <div class="goodsLibrary">
-     <div class="goods"  v-for="(good,index) in this.$store.state.goodsLibrary.goods">
+     <div class="goods"  v-for="(good,index) in $store.getters.getGoods" :key="getGoods.id">
        <img class="goodsImg" :src="good.src" alt="">
        <div class="price">
          <span class="counterPrice">￥{{good.counterPrice}}</span>
@@ -74,7 +74,7 @@
          </div>
          <div class="shop">
            <img class="img" src="../../assets/HomePage/购物车.png" alt="">
-           <span class="addToShoppingCart">加入购物车</span>
+           <span class="addToShoppingCart" @click="addToCart(good)">加入购物车</span>
          </div>
 
        </div>
@@ -86,11 +86,15 @@
 <script>
 
 
-  import { mapState } from 'vuex'
+  import { mapState , mapGetters ,mapActions} from 'vuex';
   export default {
     name: "Goods",
     computed: {
-      ...mapState(['brands','colors','types','goods'])
+      ...mapState(['brands','colors','types']),
+      ...mapGetters(['getGoods'])
+    },
+    methods:{
+      ...mapActions(['addToCart'])
     },
     data(){
       return{

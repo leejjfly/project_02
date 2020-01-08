@@ -11,11 +11,11 @@
       </router-link>
     </div>
     <div class="shoppingCart">
-      <p v-if="!$store.state.shoppingCart.counterGoods.length">购物车空空如也!</p>
+      <p v-if="!$store.getters.getCounterGoods.length">购物车空空如也!</p>
 <!--      专柜商品-->
       <el-table
       :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
-      :data="$store.state.shoppingCart.counterGoods"
+      :data="added"
       @selection-change="handleSelectionChange"
 
       style="width: 100%">
@@ -50,7 +50,7 @@
         label="数量"
         width="180">
         <template slot-scope="scope">
-          <el-input-number  size="mini" v-model="scope.row.quantity" @change="handleChange(scope.row)" :min="1" :max="10000" label="数量"></el-input-number>
+          <el-input-number size="mini" v-model="scope.row.quantity" :min="1" :max="10000" label="数量"></el-input-number>
         </template>
       </el-table-column>
 
@@ -70,7 +70,7 @@
         width="100">
         <template slot-scope="scope">
           <el-button type="text" class="addToFavorites">加入收藏</el-button>
-          <el-button type="text" @click="del(scope.$index)" class="del">删除</el-button>
+          <el-button type="text" @click="delProduct(scope.row)" class="del">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -140,11 +140,11 @@
 <!--    购物车底部-->
     <div class="shoppingCartBottom">
       <el-checkbox class="check">全选</el-checkbox>
-      <span class="del">删除选中的商品</span>
+      <span class="del" @click="delSelectedProducts">删除选中的商品</span>
       <span class="exportInfo">导出商品信息</span>
       <span class="selected">已选<span class="num">{{selectedRow}}</span>件商品</span>
       <span class="totalPrice">总价:</span>
-      <span class="num totalPriceNum">￥{{sum.toFixed(2)}}</span>
+      <span class="num totalPriceNum">{{totalPrice}}</span>
       <el-button class="submitOrder">提交订单</el-button>
     </div>
 
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-  import { mapMutations,mapState,mapGetters} from 'vuex';
+  import { mapState,mapActions} from 'vuex';
   import TopNav from "./TopNav";
   export default {
     name: "ShoppingCart",
@@ -191,56 +191,45 @@
       return{
         sum:0,
         selectedRow:0,
-        rowPrice:0,
+        multipleSelection:0,
       }
     },
     components:{
       TopNav
     },
     computed: {
-      ...mapState(['counterGoods','totalPrice']),
+      ...mapState(['added']),
+      totalPrice(){
+        this.sum=0;
+        this.selectedRow=0;
+        for(let i=0;i<this.multipleSelection.length;i++){
+          this.selectedRow++;
+          this.sum+=this.multipleSelection[i].unitPrice*this.multipleSelection[i].quantity;
+        }
+        return '￥'+this.sum.toFixed(2);
+      },
 
     },
     methods:{
-      ...mapMutations(['setTotalPrice','getTotalPrice']),
+      ...mapActions(['delProduct']),
+      //购物车中选中行数
       handleSelectionChange:function(val) {
         this.multipleSelection = val;//相当于选中了哪一行或者哪几行
-        this.sum=0;
-        this.selectedRow=1;
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          this.selectedRow++;
-          this.sum+= this.multipleSelection[i].unitPrice * this.multipleSelection[i].quantity;
+      },
+      delSelectedProducts(){
+        let str=[];
+         str= this.multipleSelection.map((item)=>{
+          return item.id
+        })
+        for(let i=0;i<this.$store.state.added.length;i++){
+          // this.$store.state.added.splice( this.multipleSelection[i], 1 );
+          let item=this.$store.state.added[i];
+          if(str.includes(item.id)){
+            this.$store.state.added.splice(i,1);
+            i--;
+          }
         }
-         this.$store.commit('getTotalPrice',this.sum);
-      },
-      //商品数量改变
-      // handleChange(cur){
-      //   if(!this.multipleSelection.length){
-      //     return
-      //   }else{
-      //     this.sum=0;
-      //     for (let i = 0; i < this.multipleSelection.length; i++) {
-      //       this.sum+= this.multipleSelection[i].unitPrice * cur;
-      //     }
-      //     console.log(this.sum);
-      //   }
-      //
-      // },
-
-      handleChange(data) {
-        console.log(data);
-        this.sum=0;
-        for(let i=0;i<this.multipleSelection.length;i++){
-          this.sum+=data.quantity*data.unitPrice;
-        }
-        console.log(this.sum);
-      },
-      //删除购物车里所选中的物品
-      del(index){
-        this.tableData=this.tableData.splice(index,1);
-        this.$store.commit('add',this.tableData)
-      },
-
+      }
 
 
     }
