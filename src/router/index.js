@@ -50,11 +50,6 @@ const router= new Router({
           component:UserGroupManage
         },
         {
-          path:'/homepage/accountmanage',
-          name:'AccountManage',
-          component:AccountManage
-        },
-        {
           path:'/homepage/goods',
           name:'Goods',
           component:Goods

@@ -49,7 +49,6 @@
 <!--      树-->
       <div class="tree">
         <p><span>组织架构</span></p>
-        <div class="el-tree-button">
           <el-tree class="el-tree"
                    :data="treeData"
                    show-checkbox
@@ -59,16 +58,14 @@
                    :props="defaultProps">
             <span class="custom-tree-node" slot-scope="{ node, data }">
              <span>{{ node.label }}</span>
+              <span>
+                <img src="../../assets/HomePage/increase.png" alt="" @click="()=>append(data)">
+                <img src="../../assets/HomePage/delete.png" alt="" @click="()=>remove(node,data)">
+                <img src="../../assets/HomePage/xiugai.png" alt="">
+                <img src="../../assets/HomePage/chakan.png" alt="">
+              </span>
             </span>
           </el-tree>
-          <div class="button">
-            <img src="../../assets/HomePage/increase.png" alt="">
-            <img src="../../assets/HomePage/delete.png" alt="">
-            <img src="../../assets/HomePage/xiugai.png" alt="">
-            <img src="../../assets/HomePage/chakan.png" alt="">
-
-          </div>
-        </div>
       </div>
 
     </div>
@@ -154,7 +151,7 @@ export default {
           }
         ]
       }
-    ]
+    ];
     return {
       searchText: '',
       tableData: [
@@ -187,20 +184,28 @@ export default {
         total:100
       }
 
-    };
+    }
   },
   methods: {
     handleCurrentChange(newPage) {
       console.log(`当前页: ${newPage}`);
       this.pageInfo.currentPage=newPage;
     },
-    append(data,parentNode){
-      const newChild = { id: id++, label: "test", children: [] };
+    //添加子节点
+    append(data) {
+      const newChild = { id: id++, label: 'testtest', children: [] };
       if (!data.children) {
-        this.$set(data, "children", []);
+        this.$set(data, 'children', []);
       }
       data.children.push(newChild);
-    }
+    },
+    //删除子节点
+    remove(node, data) {
+      const parent = node.parent;
+      const children = parent.data.children || parent.data;
+      const index = children.findIndex(d => d.id === data.id);
+      children.splice(index, 1);
+    },
   }
 };
 </script>
@@ -308,23 +313,13 @@ export default {
           margin-top: 14px;
         }
       }
-      .el-tree-button{
-        width: 410px;
+      .el-tree{
+        width: 300px;
         height: 484px;
-        display: flex;
-        .el-tree{
-          width: 200px;
-          height: 484px;
-          background-color: #f9f9f9;
-        }
-        .button{
-          width: 210px;
-          height: 434px;
-          margin-top: 30px;
-          img{
-            width: 15px;
-            height: 15px;
-          }
+        background-color: #f9f9f9;
+        img{
+          width: 15px;
+          height: 15px;
         }
       }
 

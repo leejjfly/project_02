@@ -9,8 +9,8 @@
     <div class="login">
       <img src="../assets/TopNav/登录.png" alt="" />
       <span v-if="!username" >登录</span>
-      <span>
-        {{username}}
+      <span v-if="username">
+        您好，{{username}}
       </span>
     </div>
 <!--    企业中心-->

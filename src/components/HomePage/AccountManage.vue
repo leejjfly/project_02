@@ -5,7 +5,7 @@
     <span class="accountManageSearchText">账号搜索:</span>
     <el-input class="el-input"
       placeholder="请输入姓名或手机号"
-      v-model="searchText"
+      v-model="searchText" @clear="clear"
       clearable>
     </el-input>
     <div class="accountManageSearchButton" @click="getTableData">
@@ -24,7 +24,7 @@
     </div>
     <!--表格-->
     <el-table :stripe="true" class="el-table" :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
-      :data="tableData"
+      :data="tableData1"
       style="width: 950px">
       <el-table-column
         prop="account"
@@ -152,7 +152,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
+  import {mapState,mapGetters} from 'vuex';
     export default {
         name: "AccountManage",
       data(){
@@ -177,29 +177,11 @@
           return{
             //el-switch的值
             banState:'',
+            tableData1:this.$store.getters.getAccountManage,
             //搜索框的值
             searchText:'',
-            //表格的值
-            tableData:[
-              {
-                account:'lxwl@163.com',
-                name:'刘阳',
-                phone:'18900999090',
-                character:'管理员',
-                userGroup1:'部门：技术研发中心',
-                userGroup2:'工区：新华国际广场A11',
-                state:'启用',
-              },
-              {
-                account:'lxwl123@163.com',
-                name:'李想',
-                phone:'18812341234',
-                character:'管理员',
-                userGroup1:'部门：技术研发中心',
-                userGroup2:'工区：新华国际广场A11',
-                state:'启用',
-              }
-            ],
+            //是否禁用 默认不禁用
+            ban:false,
             //分页器信息
             pageInfo:{
               currentPage:1,
@@ -275,7 +257,17 @@
       methods:{
           //是否显示禁用状态的账号
         banAccountVisible(banState){
-          console.log(banState)
+          this.banState=banState;
+          let tableData = this.tableData1;
+          if(!banState){
+            tableData=tableData.filter(function (item) {
+              if(item.state=='启用'){
+                return tableData;
+              }
+            });
+          }
+          this.tableData1=tableData;
+          return this.tableData1;
         },
 
         //分页器的当前页
@@ -306,40 +298,41 @@
         //展示编辑用户信息的对话框
         showEditDialog(){
           this.editDialogVisible=true;
-
         },
         //点击取消编辑用户信息的对话框
         editDialogClosed(){
           this.$refs.editUserFormRef.resetFields();
         },
-        // ...mapState(['formData'])
-
-
         //查询表格中的数据
         getTableData() {
           let searchText = this.searchText;
-          let tableData = this.tableData;
+          let tableData = this.tableData1;
           if (!searchText) {
-            // return tableData;
-            this.tableData=[];
+           this.$message.warning('搜索框的值不能为空！');
           }
-
           searchText=searchText.trim().toLowerCase();
-
           tableData=tableData.filter(function (item) {
-            // if(item.name.toLowerCase().indexOf(searchText)!==-1){
-            //   return item;
-            // }
             return !item.name.toLowerCase().indexOf(searchText)
           });
-          this.tableData=tableData;
+          this.tableData1=tableData;
           return tableData;
 
+        },
+        //搜索框的值为空 返回原数组
+        clear(){
+          let searchText = this.searchText;
+          let tableData = this.tableData1;
+          if (!searchText) {
+            this.tableData1=this.$store.getters.getAccountManage;
+            tableData=this.tableData1;
+            return tableData;
+          }
         }
       },
       computed:{
-
-      }
+        ...mapState(['accountManage']),
+        ...mapGetters(['getAccountManage'])
+      },
     }
 </script>
 

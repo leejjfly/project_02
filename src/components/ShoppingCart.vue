@@ -140,7 +140,7 @@
 <!--    购物车底部-->
     <div class="shoppingCartBottom">
       <el-checkbox class="check">全选</el-checkbox>
-      <span class="del" @click="delSelectedProducts">删除选中的商品</span>
+      <span class="del" @click="delSelectedProductsDialog">删除选中的商品</span>
       <span class="exportInfo">导出商品信息</span>
       <span class="selected">已选<span class="num">{{selectedRow}}</span>件商品</span>
       <span class="totalPrice">总价:</span>
@@ -156,6 +156,20 @@
 
       </div>
     </div>
+
+
+<!--    删除商品的对话框-->
+    <el-dialog
+      title="提示"
+      :visible.sync="delDialogVisible"
+      width="30%">
+      <span>确认将选择商品删除?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="delSelectedProducts">确 定</el-button>
+        <el-button @click="delDialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
+
 
 <!--    footer底部栏位置-->
     <div class="footer">
@@ -192,6 +206,8 @@
         sum:0,
         selectedRow:0,
         multipleSelection:0,
+        //删除选中商品的对话框
+        delDialogVisible: false
       }
     },
     components:{
@@ -216,11 +232,16 @@
       handleSelectionChange:function(val) {
         this.multipleSelection = val;//相当于选中了哪一行或者哪几行
       },
+      delSelectedProductsDialog(){
+
+        this.delDialogVisible=true;
+      },
       delSelectedProducts(){
+        this.delDialogVisible=false;
         let str=[];
-         str= this.multipleSelection.map((item)=>{
+        str= this.multipleSelection.map((item)=>{
           return item.id
-        })
+        });
         for(let i=0;i<this.$store.state.added.length;i++){
           // this.$store.state.added.splice( this.multipleSelection[i], 1 );
           let item=this.$store.state.added[i];
@@ -281,13 +302,6 @@
        width: 80px;
        height: 80px;
      }
-     /*.goodsInfo{*/
-     /*  width: 440px;*/
-     /*  .goodsText{*/
-     /*    display: inline-block;*/
-     /*    width: 360px;*/
-     /*  }*/
-     /*}*/
      .addToFavorites{
        color: #10C899;
      }

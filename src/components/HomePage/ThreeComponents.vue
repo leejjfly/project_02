@@ -27,7 +27,7 @@
   div{
     width: 990px;
     height: 728px;
-    background-color: #eeeeee;
+    background-color: #f6f6f6;
     .personalInfo{
       width: 990px;
       height: 124px;
