@@ -24,7 +24,7 @@
     </div>
     <!--表格-->
     <el-table :stripe="true" class="el-table" :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
-      :data="tableData1"
+      :data="tableData"
       style="width: 950px">
       <el-table-column
         prop="account"
@@ -67,8 +67,9 @@
         <template slot-scope="scope">
           <el-button type="text" style="color: #10C899;height: 30px;">移交</el-button>
           <el-button type="text" style="color: #10C899;height: 30px;">设置</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;" @click="showEditDialog">编辑</el-button>
-          <el-button type="text" style="color: #2c2c2c;height: 30px;">禁用</el-button>
+          <el-button type="text" style="color: #10C899;height: 30px;" @click="showEditDialog(scope.row)">编辑</el-button>
+          <el-button type="text" style="color: #10C899;height: 30px;" @click="banAccount(scope.row,scope.$index)" v-if="scope.row.state=='禁用'">启用</el-button>
+          <el-button type="text" style="color: #2c2c2c;height: 30px;" @click="banAccount(scope.row,scope.$index)" v-if="scope.row.state=='启用'">禁用</el-button>
           <el-button type="text" style="color: #10C899;height: 30px;">监管范围</el-button>
           <el-button type="text" style="color: #10C899;height: 30px;">通知方式</el-button>
         </template>
@@ -77,12 +78,15 @@
     </el-table>
     <!--分页器-->
     <el-pagination class="el-pagination"
-        @current-change="handleCurrentChange"
-        :page-size="pageInfo.pageSize"
-        prev-text="上一页"
-        next-text="下一页"
-        layout="total, prev, pager, next,jumper"
-        :total="pageInfo.total">
+                   @current-change="handleCurrentChange"
+                   @size-change="handleSizeChange"
+                   prev-text="上一页"
+                   next-text="下一页"
+                   :page-sizes="[1, 2, 5, 10]"
+                   :current-page.sync="currentPage"
+                   :page-size="pageSize"
+                   layout="total,sizes, prev, pager, next,jumper"
+                   :total="total">
     </el-pagination>
   </div>
 <!--  添加新用户-->
@@ -126,7 +130,7 @@
     <!--    表单主体-->
     <el-form :model="editUserForm" :rules="editUserFormRules"  ref="editUserFormRef" label-width="100px" class="editDialog">
       <el-form-item label="账号名" prop="accountName">
-        <el-input v-model="editUserForm.accountName"></el-input>
+        <el-input v-model="editUserForm.account"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input type="password" v-model="editUserForm.password"></el-input><el-button>重置密码</el-button>
@@ -135,7 +139,7 @@
         <el-input v-model="editUserForm.username"></el-input>
       </el-form-item>
       <el-form-item label="电话" prop="phoneNumber">
-        <el-input v-model="editUserForm.phoneNumber"></el-input>
+        <el-input v-model="editUserForm.phone"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="editUserForm.email"></el-input>
@@ -152,7 +156,6 @@
 </template>
 
 <script>
-  import {mapState,mapGetters} from 'vuex';
     export default {
         name: "AccountManage",
       data(){
@@ -175,19 +178,55 @@
           cb(new Error('请输入合法的手机号'));
         };
           return{
+            //账号管理页列表
+            accountManage:[
+              {
+                id:1,
+                account:'lxwl@163.com',
+                name:'刘阳',
+                password:'123456789',
+                phone:'18900999090',
+                character:'管理员',
+                userGroup1:'部门：技术研发中心',
+                userGroup2:'工区：新华国际广场B11',
+                state:'启用',
+                email:'',
+              },
+              {
+                id:2,
+                account:'lxwl123@163.com',
+                name:'李想',
+                password:'123456789',
+                phone:'18812341234',
+                character:'管理员',
+                userGroup1:'部门：财务中心',
+                userGroup2:'工区：新华国际广场A11',
+                state:'禁用',
+                email:'',
+              },
+              {
+                id:3,
+                account:'lxwl456@163.com',
+                name:'张三',
+                password:'123456789',
+                phone:'15012341234',
+                character:'管理员',
+                userGroup1:'部门：人力资源中心',
+                userGroup2:'工区：新华国际广场A11',
+                state:'启用',
+                email:'',
+              }
+            ],
+            //查询账号列表
+            tableData:[],
             //el-switch的值
-            banState:'',
-            tableData1:this.$store.getters.getAccountManage,
+            banState:true,
             //搜索框的值
             searchText:'',
-            //是否禁用 默认不禁用
-            ban:false,
             //分页器信息
-            pageInfo:{
               currentPage:1,
-              pageSize:10,
-              total:100
-            },
+              pageSize:2,
+              total:0,
             //添加新用户的对话框
             addUserVisible:false,
             //添加新用户的表单
@@ -223,7 +262,7 @@
             //控制编辑用户信息的对话框
             editDialogVisible:false,
             editUserForm:{
-              accountName:'',
+              account:'',
               password:'',
               username:'',
               phoneNumber:'',
@@ -254,25 +293,24 @@
 
           }
       },
+      created(){
+          this.tableData=this.accountManage;
+          this.total=this.tableData.length;
+      },
       methods:{
           //是否显示禁用状态的账号
         banAccountVisible(banState){
-          this.banState=banState;
-          let tableData = this.tableData1;
+          let tableData = this.tableData;
           if(!banState){
             tableData=tableData.filter(function (item) {
               if(item.state=='启用'){
                 return tableData;
               }
             });
+            return this.tableData=tableData;
           }
-          this.tableData1=tableData;
-          return this.tableData1;
-        },
-
-        //分页器的当前页
-        handleCurrentChange(currentPage) {
-          console.log(`当前页: ${currentPage}`);
+          this.tableData=this.accountManage;
+          return this.tableData;
         },
         //点击取消关闭对话框
         addDialogClosed(){
@@ -283,21 +321,31 @@
           this.$refs.addUserFormRef.validate(valid=>{
             if(!valid) return;
             //表单预校验成功
-            this.tableData=this.tableData||[];
-            window.localStorage.setItem("account",this.addUserForm.accountName);
-            window.localStorage.setItem("name",this.addUserForm.username);
-            window.localStorage.setItem("phone",this.addUserForm.phoneNumber);
-            this.tableData.push({
+            this.accountManage=this.accountManage||[];
+            this.accountManage.push({
               account:this.addUserForm.accountName,
               name:this.addUserForm.username,
-              phone:this.addUserForm.phoneNumber
-            })
+              password:this.addUserForm.password,
+              phone:this.addUserForm.phoneNumber,
+              email:this.addUserForm.email,
+              character:'普通用户',
+              userGroup1:'部门：技术研发中心',
+              userGroup2:'工区：新华国际广场A11',
+              state:'启用'
+            });
+
           });
+          this.tableData.length++;
           this.addUserVisible = false;
         },
         //展示编辑用户信息的对话框
-        showEditDialog(){
+        showEditDialog(account){
           this.editDialogVisible=true;
+          this.editUserForm.account=account.account;
+          this.editUserForm.password=account.password;
+          this.editUserForm.username=account.name;
+          this.editUserForm.phone=account.phone;
+          this.editUserForm.email=account.email;
         },
         //点击取消编辑用户信息的对话框
         editDialogClosed(){
@@ -306,7 +354,7 @@
         //查询表格中的数据
         getTableData() {
           let searchText = this.searchText;
-          let tableData = this.tableData1;
+          let tableData = this.accountManage;
           if (!searchText) {
            this.$message.warning('搜索框的值不能为空！');
           }
@@ -314,24 +362,42 @@
           tableData=tableData.filter(function (item) {
             return !item.name.toLowerCase().indexOf(searchText)
           });
-          this.tableData1=tableData;
+          this.tableData=tableData;
           return tableData;
 
         },
         //搜索框的值为空 返回原数组
         clear(){
           let searchText = this.searchText;
-          let tableData = this.tableData1;
+          let tableData = this.accountManage;
           if (!searchText) {
-            this.tableData1=this.$store.getters.getAccountManage;
-            tableData=this.tableData1;
+            this.tableData=this.accountManage;
+            tableData=this.tableData;
             return tableData;
           }
-        }
+        },
+        // //增加禁用账号功能
+        banAccount(account,index){
+          if(account.state=='启用'){
+            this.tableData[index].state='禁用';
+          }else{
+            this.tableData[index].state='启用';
+          }
+        },
+        //分页器 页面大小改变
+        handleSizeChange(value){
+          this.pageSize=value;
+          console.log(`每页 ${value} 条`);
+        },
+        //分页器的当前页
+        handleCurrentChange(currentPage) {
+          this.currentPage=currentPage;
+          console.log(`当前页: ${currentPage}`);
+
+        },
       },
       computed:{
-        ...mapState(['accountManage']),
-        ...mapGetters(['getAccountManage'])
+
       },
     }
 </script>

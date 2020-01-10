@@ -85,39 +85,6 @@ const store = new Vuex.Store({
     ],
     //添加到购物车的列表
     added:[],
-    //账号管理页列表
-    accountManage:[
-      {
-        id:1,
-        account:'lxwl@163.com',
-        name:'刘阳',
-        phone:'18900999090',
-        character:'管理员',
-        userGroup1:'部门：技术研发中心',
-        userGroup2:'工区：新华国际广场B11',
-        state:true,
-      },
-      {
-        id:2,
-        account:'lxwl123@163.com',
-        name:'李想',
-        phone:'18812341234',
-        character:'管理员',
-        userGroup1:'部门：财务中心',
-        userGroup2:'工区：新华国际广场A11',
-        state:false,
-      },
-      {
-        id:3,
-        account:'lxwl456@163.com',
-        name:'张三',
-        phone:'15012341234',
-        character:'管理员',
-        userGroup1:'部门：人力资源中心',
-        userGroup2:'工区：新华国际广场A11',
-        state:true,
-      }
-    ],
   },
   getters: {
     //商品列表
@@ -153,36 +120,6 @@ const store = new Vuex.Store({
         amount++;
       }
       return amount;
-    },
-
-    //获得账号管理列表
-    getAccountManage: state => {
-      return state.accountManage.map(account => {
-        if(account.state===true){
-          return {
-            id: account.id,
-            account: account.account,
-            name: account.name,
-            phone: account.phone,
-            character: account.character,
-            userGroup1: account.userGroup1,
-            userGroup2: account.userGroup2,
-            state: '启用'
-          }
-        }else{
-          return {
-            id: account.id,
-            account: account.account,
-            name: account.name,
-            phone: account.phone,
-            character: account.character,
-            userGroup1: account.userGroup1,
-            userGroup2: account.userGroup2,
-            state: '禁用'
-          }
-        }
-
-      })
     },
   },
   mutations:{
@@ -228,7 +165,6 @@ const store = new Vuex.Store({
     delProduct({commit},product){
       commit('DELETE',product)
     },
-
   }
 
 });

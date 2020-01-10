@@ -37,11 +37,8 @@
           >
           </el-table-column>
           <el-table-column prop="operate" label="操作" width="180px">
-            <template>
-              <span>
-                {{tableData.operate}}
-              </span>
-              <el-button type="text">删除</el-button>
+            <template slot-scope="scope">
+              <el-button type="text"> {{scope.row.operate}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -89,6 +86,7 @@
 </template>
 
 <script>
+  let id=1000;
 export default {
   name: "UserGroupManage",
   data() {
@@ -164,12 +162,14 @@ export default {
         {
           id: "2",
           name: "工区",
-          usingPeopleAmount: "200"
+          usingPeopleAmount: "200",
+          operate:'删除'
         },
         {
           id: "3",
           name: "成本中心",
-          usingPeopleAmount: "200"
+          usingPeopleAmount: "200",
+          operate:'删除'
         }
       ],
       treeData: JSON.parse(JSON.stringify(treeData)),
@@ -193,7 +193,7 @@ export default {
     },
     //添加子节点
     append(data) {
-      const newChild = { id: id++, label: 'testtest', children: [] };
+      const newChild = { id: id++, label: '子节点', children: [] };
       if (!data.children) {
         this.$set(data, 'children', []);
       }

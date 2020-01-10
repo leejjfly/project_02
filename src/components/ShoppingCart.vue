@@ -233,9 +233,9 @@
         this.multipleSelection = val;//相当于选中了哪一行或者哪几行
       },
       delSelectedProductsDialog(){
-
         this.delDialogVisible=true;
       },
+      //删除选中的商品
       delSelectedProducts(){
         this.delDialogVisible=false;
         let str=[];
@@ -243,7 +243,6 @@
           return item.id
         });
         for(let i=0;i<this.$store.state.added.length;i++){
-          // this.$store.state.added.splice( this.multipleSelection[i], 1 );
           let item=this.$store.state.added[i];
           if(str.includes(item.id)){
             this.$store.state.added.splice(i,1);
