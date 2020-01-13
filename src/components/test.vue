@@ -3,67 +3,24 @@
     <div class="dd" @click="local">
       {{ app }}
     </div>
-    <el-table :stripe="true" class="el-table" :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
-              :data="accountManage"
-              style="width: 950px">
-      <el-table-column
-        prop="account"
-        label="账号"
-        width="160px">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="80px">
-      </el-table-column>
-      <el-table-column
-        prop="phone"
-        label="电话"
-        width="150px">
-      </el-table-column>
-      <el-table-column
-        prop="character"
-        label="角色"
-        width="80px">
-      </el-table-column>
-      <el-table-column
-        prop="userGroup"
-        label="用户组"
-        width="200px">
-        <template slot-scope="scope">
-          <span>{{scope.row.userGroup1}}</span>
-          <br/>
-          <span>{{scope.row.userGroup2}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="state"
-        label="状态"
-        width="80px">
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        width="200px">
-        <template slot-scope="scope">
-          <el-button type="text" style="color: #10C899;height: 30px;">移交</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;">设置</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;">编辑</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;" v-if="scope.row.state=='禁用'">启用</el-button>
-          <el-button type="text" style="color: #2c2c2c;height: 30px;"  v-if="scope.row.state=='启用'">禁用</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;">监管范围</el-button>
-          <el-button type="text" style="color: #10C899;height: 30px;">通知方式</el-button>
-        </template>
-
-      </el-table-column>
+    <el-table
+      :data="tempList"
+      :header-cell-style="rowClass"
+      stripe
+      border style="margin-bottom:14px;"
+      :empty-text="emptyText">
+      <el-table-column property="name" label="债券名称" width="228"></el-table-column>
+      <el-table-column property="marketValue" label="市值" width="228" align="right" :formatter="formatDecimal2"></el-table-column>
+      <el-table-column property="type" label="债券类型"></el-table-column>
+      <el-table-column property="ratio" label="占母基金的比重" align="right" :formatter="toPercent"></el-table-column>
     </el-table>
+
     <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[1, 2, 300, 400]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="400">
+      @size-change="handleSizeChange1"
+      @current-change="handleCurrentChange1" :current-page="currentPage1"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+      :total="total1">
     </el-pagination>
 
 
@@ -76,49 +33,110 @@ export default {
   data() {
     return {
       app: "",
-      search: "",
-      accountManage:[
-        {
-          id:1,
-          account:'lxwl@163.com',
-          name:'刘阳',
-          password:'123456789',
-          phone:'18900999090',
-          character:'管理员',
-          userGroup1:'部门：技术研发中心',
-          userGroup2:'工区：新华国际广场B11',
-          state:'启用',
-          email:'',
-        },
-        {
-          id:2,
-          account:'lxwl123@163.com',
-          name:'李想',
-          password:'123456789',
-          phone:'18812341234',
-          character:'管理员',
-          userGroup1:'部门：财务中心',
-          userGroup2:'工区：新华国际广场A11',
-          state:'禁用',
-          email:'',
-        },
-        {
-          id:3,
-          account:'lxwl456@163.com',
-          name:'张三',
-          password:'123456789',
-          phone:'15012341234',
-          character:'管理员',
-          userGroup1:'部门：人力资源中心',
-          userGroup2:'工区：新华国际广场A11',
-          state:'启用',
-          email:'',
-        }
-      ],
-      pageSize:null,
-      currentPage:1,
-      tableData:[],
+      total1: 0,
+      currentPage1:1,
+      pageSize:10,
+      tempList:[],
+      bondsAllList: [{
+      "name": "16协信01",
+      "marketValue": 691861.0999317318,
+      "type": "信用债",
+      "ratio": 0.0027959958264152343
+    }, {
+      "name": "16朗诗01",
+      "marketValue": 690131.4471819025,
+      "type": "信用债",
+      "ratio": 0.002789005836849196
+    }, {
+      "name": "16三盛01",
+      "marketValue": 688816.9110920322,
+      "type": "信用债",
+      "ratio": 0.0027836934447790073
+    }, {
+      "name": "17三鼎01",
+      "marketValue": 685426.7917023668,
+      "type": "信用债",
+      "ratio": 0.002769993065229573
+    }, {
+      "name": "16临开债",
+      "marketValue": 676640.4401650192,
+      "type": "信用债",
+      "ratio": 0.00273448506769905
+    }, {
+      "name": "16华讯01",
+      "marketValue": 614990.17198298,
+      "type": "信用债",
+      "ratio": 0.0024853398381849607
+    }, {
+      "name": "16花样03",
+      "marketValue": 614990.0028613778,
+      "type": "信用债",
+      "ratio": 0.0024853391547193142
+    }, {
+      "name": "15协信01",
+      "marketValue": 614987.6443837617,
+      "type": "信用债",
+      "ratio": 0.0024853296234802085
+    }, {
+      "name": "16三盛03",
+      "marketValue": 461240.73328782123,
+      "type": "信用债",
+      "ratio": 0.0018639972176101563
+    }, {
+      "name": "16山钢03",
+      "marketValue": 384367.27773985104,
+      "type": "信用债",
+      "ratio": 0.0015533310146751303
+    }, {
+      "name": "14甘公01",
+      "marketValue": 324002.01240352966,
+      "type": "信用债",
+      "ratio": 0.0013093788254893862
+    }, {
+      "name": "15新湖债",
+      "marketValue": 307493.82219188084,
+      "type": "信用债",
+      "ratio": 0.0012426648117401043
+    }, {
+      "name": "16珠管01",
+      "marketValue": 303035.16177009855,
+      "type": "信用债",
+      "ratio": 0.0012246461719698726
+    }, {
+      "name": "16重机债",
+      "marketValue": 299103.36126325984,
+      "type": "信用债",
+      "ratio": 0.0012087567140880767
+    }, {
+      "name": "17三鼎01",
+      "marketValue": 8163.960979194436,
+      "type": "信用债",
+      "ratio": 3.2992750751699765E-5
+    }, {
+      "name": "16重机债",
+      "marketValue": 1475.2323613477674,
+      "type": "信用债",
+      "ratio": 5.961808700804324E-6
+    }, {
+      "name": "14甘公01",
+      "marketValue": 723.1485963397557,
+      "type": "信用债",
+      "ratio": 2.92243697100979E-6
+    }, {
+      "name": "15新湖债",
+      "marketValue": 707.2357910413259,
+      "type": "信用债",
+      "ratio": 2.85812906700224E-6
+    }, {
+      "name": "16珠管01",
+      "marketValue": 153.74691109594042,
+      "type": "信用债",
+      "ratio": 6.213324058700521E-7
+    }]
     };
+  },
+  created() {
+    this.tempList=this.bondsAllList
   },
   methods: {
     local() {
@@ -138,31 +156,26 @@ export default {
       }
     },
 
-    //分页器 页面大小改变
-    handleSizeChange(value){
-      this.pageSize=value;
-      console.log(`每页 ${value} 条`);
-     this.accountManage=[{
-       id:1,
-       account:'lxwl@163.com',
-       name:'刘阳',
-       password:'123456789',
-       phone:'18900999090',
-       character:'管理员',
-       userGroup1:'部门：技术研发中心',
-       userGroup2:'工区：新华国际广场B11',
-       state:'启用',
-       email:'',
-     }]
+    handleSizeChange1: function(pageSize) { // 每页条数切换
+      this.pageSize = pageSize
+      this.handleCurrentChange1(this.currentPage1);
+    },
+    handleCurrentChange1: function(currentPage) {//页码切换
+      this.currentPage1 = currentPage
+      this.currentChangePage(this.bondsAllList,currentPage)
 
     },
-    //分页器的当前页
-    handleCurrentChange(currentPage) {
-      this.currentPage=currentPage;
-      console.log(`当前页: ${currentPage}`);
-
+    //分页方法（重点）
+    currentChangePage(list,currentPage) {
+      let from = (currentPage - 1) * this.pageSize;
+      let to = currentPage * this.pageSize;
+      this.tempList = [];
+      for (; from < to; from++) {
+        if (list[from]) {
+          this.tempList.push(list[from]);
+        }
+      }
     },
-
   }
 }
 </script>

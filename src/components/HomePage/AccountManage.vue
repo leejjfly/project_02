@@ -82,11 +82,11 @@
                    @size-change="handleSizeChange"
                    prev-text="上一页"
                    next-text="下一页"
-                   :page-sizes="[1, 2, 5, 10]"
-                   :current-page.sync="currentPage"
-                   :page-size="pageSize"
+                   :page-sizes="[1, 2, 3, 5]"
+                   :current-page.sync="pageInfo.currentPage"
+                   :page-size="pageInfo.pageSize"
                    layout="total,sizes, prev, pager, next,jumper"
-                   :total="total">
+                   :total="pageInfo.total">
     </el-pagination>
   </div>
 <!--  添加新用户-->
@@ -224,9 +224,11 @@
             //搜索框的值
             searchText:'',
             //分页器信息
+            pageInfo:{
               currentPage:1,
-              pageSize:2,
+              pageSize:3,
               total:0,
+            },
             //添加新用户的对话框
             addUserVisible:false,
             //添加新用户的表单
@@ -245,7 +247,7 @@
               ],
               password:[
                 {required:true,message:'请输入密码',trigger:'blur'},
-                {min:6,max:20,message: '用户名在5~20个字符之间',trigger: 'blur'}
+                {min:6,max:20,message: '密码在5~20个字符之间',trigger: 'blur'}
               ],
               accountName:[
                 {required:true,message:'请输入账号',trigger:'blur'}
@@ -294,13 +296,18 @@
           }
       },
       created(){
-          this.tableData=this.accountManage;
-          this.total=this.tableData.length;
+          this.pageInfo.total=this.accountManage.length;
+          if(this.pageInfo.pageSize<=this.pageInfo.total){
+            for(let i=0;i<this.pageInfo.pageSize;i++){
+              this.tableData.push(this.accountManage[i]);
+            }
+          }
       },
       methods:{
           //是否显示禁用状态的账号
         banAccountVisible(banState){
           let tableData = this.tableData;
+          this.banState=banState;
           if(!banState){
             tableData=tableData.filter(function (item) {
               if(item.state=='启用'){
@@ -335,7 +342,7 @@
             });
 
           });
-          this.tableData.length++;
+          this.pageInfo.total++;
           this.addUserVisible = false;
         },
         //展示编辑用户信息的对话框
@@ -356,14 +363,37 @@
           let searchText = this.searchText;
           let tableData = this.accountManage;
           if (!searchText) {
-           this.$message.warning('搜索框的值不能为空！');
+            this.$message.warning('搜索框的值不能为空！');
           }
+          // else{
+          //   if(!this.banState){
+          //     tableData=tableData.filter(function (item) {
+          //       if(item.state=='启用'){
+          //         searchText=searchText.trim().toLowerCase();
+          //         tableData=tableData.filter(function (item) {
+          //           return !item.name.toLowerCase().indexOf(searchText)||!item.phone.toLowerCase().indexOf(searchText)
+          //         });
+          //         this.tableData=tableData;
+          //         return this.tableData;
+          //       }
+          //     });
+          //     return this.tableData=tableData;
+          //   }else{
+          //     searchText=searchText.trim().toLowerCase();
+          //     tableData=tableData.filter(function (item) {
+          //       return !item.name.toLowerCase().indexOf(searchText)||!item.phone.toLowerCase().indexOf(searchText)
+          //     });
+          //     this.tableData=tableData;
+          //     return this.tableData;
+          //   }
+          // }
           searchText=searchText.trim().toLowerCase();
           tableData=tableData.filter(function (item) {
-            return !item.name.toLowerCase().indexOf(searchText)
+            return !item.name.toLowerCase().indexOf(searchText)||!item.phone.toLowerCase().indexOf(searchText)
           });
           this.tableData=tableData;
-          return tableData;
+          return this.tableData;
+
 
         },
         //搜索框的值为空 返回原数组
@@ -375,6 +405,15 @@
             tableData=this.tableData;
             return tableData;
           }
+          // if(!this.banState){
+          //   return tableData.filter(function (item) {
+          //     return item.state=='启用';
+          //   })
+          // }else{
+          //     this.tableData=this.accountManage;
+          //     tableData=this.tableData;
+          //     return tableData;
+          // }
         },
         // //增加禁用账号功能
         banAccount(account,index){
@@ -386,15 +425,18 @@
         },
         //分页器 页面大小改变
         handleSizeChange(value){
-          this.pageSize=value;
-          console.log(`每页 ${value} 条`);
+          this.pageInfo.pageSize=value;
+          this.tableData=this.accountManage.slice((this.pageInfo.currentPage-1)*this.pageInfo.pageSize,this.pageInfo.currentPage*this.pageInfo.pageSize);
+          this.pageInfo.total=this.accountManage.length;
         },
         //分页器的当前页
         handleCurrentChange(currentPage) {
-          this.currentPage=currentPage;
-          console.log(`当前页: ${currentPage}`);
+          this.pageInfo.currentPage=currentPage;
+          this.tableData=this.accountManage.slice((this.pageInfo.currentPage-1)*this.pageInfo.pageSize,this.pageInfo.currentPage*this.pageInfo.pageSize);
+          this.pageInfo.total=this.accountManage.length;
 
         },
+
       },
       computed:{
 

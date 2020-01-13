@@ -4,18 +4,19 @@
       <span class="userGroupTitle">用户组管理</span>
     </div>
     <div class="userGroupAdd">
-      <div class="addButton">
+      <div class="addButton" @click="addUserGroupVisible=true">
         <span class="addButtonText">添加+</span>
       </div>
       <div class="search">
         <el-input
+          @clear="clear"
           class="el-input"
           placeholder="请输入用户组"
           v-model="searchText"
           clearable
         >
         </el-input>
-        <div class="userGroupManageSearchButton">
+        <div class="userGroupManageSearchButton" @click="getTableData">
           <span class="userGroupManageSearchButtonText">搜索</span>
           <img src="../../assets/HomePage/search.png" class="img" />
         </div>
@@ -25,8 +26,15 @@
     <div class="tableTree">
 <!--      表格-->
       <div class="table">
-        <el-table class="el-table" :data="tableData" stripe :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}">
+        <el-table class="el-table"
+                  :data="tableData" stripe
+                  :header-cell-style="{background:'#eee',textAlign:'center'}"
+
+                  :cell-style="firstRow">
           <el-table-column prop="id" label="序号" width="100px">
+            <template slot-scope="scope">
+              <span>{{scope.$index+1}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="name" label="名称" width="180px">
           </el-table-column>
@@ -38,7 +46,8 @@
           </el-table-column>
           <el-table-column prop="operate" label="操作" width="180px">
             <template slot-scope="scope">
-              <el-button type="text"> {{scope.row.operate}}</el-button>
+              <span v-if="scope.row.operate=='默认分组'"> {{scope.row.operate}}</span>
+              <el-button type="text" style="color: #2c2c2c" v-if="scope.row.operate=='删除'" @click="del(scope.$index)"> {{scope.row.operate}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -69,10 +78,13 @@
     <div class="el-pagSave">
       <el-pagination class="el-pagination"
                      @current-change="handleCurrentChange"
+                     @size-change="handleSizeChange"
                      :page-size="pageInfo.pageSize"
+                     :page-sizes="[1, 2, 3, 5]"
                      prev-text="上一页"
                      next-text="下一页"
-                     layout="total, prev, pager, next,jumper"
+                     :current-page.sync="pageInfo.currentPage"
+                     layout="total, sizes,prev, pager, next,jumper"
                      :total="pageInfo.total">
       </el-pagination>
       <div class="saveButton">
@@ -82,6 +94,28 @@
       </div>
     </div>
 
+<!--    添加用户组-->
+    <el-dialog
+      title="新建用户组"
+      :visible.sync="addUserGroupVisible"
+      @close="addUserGroupDialogClosed"
+      width="40%">
+      <!--    表单主体-->
+      <el-form :model="addUserGroupForm" ref='addUserGroupFormRef' :rules='addUserGroupFormRules' label-width="100px">
+        <el-form-item label="用户组名称" prop="userGroupName">
+          <el-input v-model="addUserGroupForm.userGroupName"></el-input>
+        </el-form-item>
+        <el-form-item label="使用人数" prop="amount">
+          <el-input v-model="addUserGroupForm.amount"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="addUserGroup">提交</el-button>
+    <el-button @click="addUserGroupVisible = false">取 消</el-button>
+
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -152,48 +186,79 @@ export default {
     ];
     return {
       searchText: '',
-      tableData: [
+      userGroupManage: [
         {
-          id: "1",
           name: "组织架构",
           usingPeopleAmount: "200",
           operate: "默认分组"
         },
         {
-          id: "2",
           name: "工区",
           usingPeopleAmount: "200",
-          operate:'删除'
+          operate: '删除'
         },
         {
-          id: "3",
           name: "成本中心",
           usingPeopleAmount: "200",
-          operate:'删除'
+          operate: '删除'
         }
       ],
+      tableData: [],
       treeData: JSON.parse(JSON.stringify(treeData)),
       defaultProps: {
         children: 'children',
         label: 'label'
       },
       //分页器信息
-      pageInfo:{
-        currentPage:1,
-        pageSize:10,
-        total:100
+      pageInfo: {
+        currentPage: 1,
+        pageSize: 3,
+        total: 0
+      },
+      //添加用户组的表单
+      addUserGroupForm: {
+        userGroupName: '',
+        amount: ''
+      },
+      addUserGroupVisible: false,
+      //添加用户组表单的验证规则
+      addUserGroupFormRules: {
+        userGroupName: [
+          {required: true, message: '请输入用户组名', trigger: 'blur'},
+          {min: 2, max: 10, message: '用户名在2~10个字符之间', trigger: 'blur'}
+        ],
+        amount: [
+          {required: true, message: '请输入使用人数', trigger: 'blur'},
+          {min: 1, max: 5, message: '使用人数在1~5个字符之间', trigger: 'blur'}
+        ],
+      },
+    }
+  },
+  created() {
+    this.pageInfo.total = this.userGroupManage.length;
+    if (this.pageInfo.pageSize <= this.pageInfo.total) {
+      for (let i = 0; i < this.pageInfo.pageSize; i++) {
+        this.tableData.push(this.userGroupManage[i]);
       }
-
     }
   },
   methods: {
-    handleCurrentChange(newPage) {
-      console.log(`当前页: ${newPage}`);
-      this.pageInfo.currentPage=newPage;
+    //分页器 页面大小改变
+    handleSizeChange(value) {
+      this.pageInfo.pageSize = value;
+      this.tableData = this.userGroupManage.slice((this.pageInfo.currentPage - 1) * this.pageInfo.pageSize, this.pageInfo.currentPage * this.pageInfo.pageSize);
+      this.pageInfo.total = this.userGroupManage.length;
+    },
+    //分页器的当前页
+    handleCurrentChange(currentPage) {
+      this.pageInfo.currentPage = currentPage;
+      this.tableData = this.userGroupManage.slice((this.pageInfo.currentPage - 1) * this.pageInfo.pageSize, this.pageInfo.currentPage * this.pageInfo.pageSize);
+      this.pageInfo.total = this.userGroupManage.length;
+
     },
     //添加子节点
     append(data) {
-      const newChild = { id: id++, label: '子节点', children: [] };
+      const newChild = {id: id++, label: '子节点', children: []};
       if (!data.children) {
         this.$set(data, 'children', []);
       }
@@ -206,8 +271,67 @@ export default {
       const index = children.findIndex(d => d.id === data.id);
       children.splice(index, 1);
     },
+    //添加用户组
+    addUserGroup() {
+      this.$refs.addUserGroupFormRef.validate(valid => {
+        if (!valid) return;
+        this.tableData = this.tableData || [];
+        this.tableData.push({
+          name: this.addUserGroupForm.userGroupName,
+          usingPeopleAmount: this.addUserGroupForm.amount,
+          operate: '删除'
+        });
+        this.pageInfo.total++;
+      });
+      this.addUserGroupVisible = false;
+
+    },
+    //关闭添加用户组对话框
+    addUserGroupDialogClosed() {
+      this.$refs.addUserGroupFormRef.resetFields();
+    },
+    //查询表格中的数据
+    getTableData() {
+      let searchText = this.searchText;
+      let tableData = this.tableData;
+      searchText = searchText.trim().toLowerCase();
+      tableData = tableData.filter(function (item) {
+        return !item.name.toLowerCase().indexOf(searchText)
+      });
+      this.tableData = tableData;
+      return this.tableData;
+    },
+    //清空
+    clear() {
+      let searchText = this.searchText;
+      let tableData = this.userGroupManage;
+      if (!searchText) {
+        this.tableData = this.userGroupManage;
+        tableData = this.tableData;
+        return tableData;
+      }
+      return tableData;
+    },
+    del(index) {
+      let tableData = this.tableData;
+     tableData.splice(index,1);
+      this.tableData=tableData;
+      this.pageInfo.total--;
+      return this.tableData;
+    },
+    firstRow({row,column,rowIndex,columnIndex}){
+      if(rowIndex==0){
+        return 'color:#10c899;textAlign:center;'
+      }else{
+        return 'textAlign:center;'
+      }
+    }
+
+  },
+  computed:{
+
   }
-};
+}
 </script>
 
 <style scoped lang="less">
