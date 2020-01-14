@@ -5,11 +5,7 @@
     <span class="more">更多</span>
   </div>
   <div class="messagePushMain">
-    <div class="messagePushContent">
-      <span class="messagePushContentTitle">{{news.title}}</span>
-      <span class="messagePushContentDate">[{{news.date}}]</span>
-    </div>
-    <div class="messagePushContent">
+    <div class="messagePushContent" v-for="news in newsList">
       <span class="messagePushContentTitle">{{news.title}}</span>
       <span class="messagePushContentDate">[{{news.date}}]</span>
     </div>
@@ -22,10 +18,28 @@
       name: "MessagePush",
       data(){
         return{
-          news:{
-            title:'有关领先未来后台详解，业务数据分析会议阿克苏',
-            date:'11-21'
-          }
+          newsList:[
+            {
+              title:'有关领先未来后台详解，业务数据分析会议阿克苏',
+              date:'11-21'
+            },
+            {
+              title:'有关领先未来后台详解，业务数据分析会议阿克苏',
+              date:'11-21'
+            },
+            {
+              title:'有关领先未来后台详解，业务数据分析会议阿克苏',
+              date:'11-21'
+            },
+            {
+              title:'有关领先未来后台详解，业务数据分析会议阿克苏',
+              date:'11-21'
+            },
+            {
+              title:'有关领先未来后台详解，业务数据分析会议阿克苏',
+              date:'11-21'
+            },
+          ]
         }
       }
     }
@@ -69,6 +83,7 @@
        justify-content: space-between;
        .messagePushContentTitle{
          display: inline-block;
+         cursor: pointer;
          width: 700px;
          height: 30px;
          font-size: 14px;
@@ -77,6 +92,7 @@
        .messagePushContentDate{
          width: 80px;
          height: 30px;
+         cursor: pointer;
          font-size: 14px;
          display: inline-block;
 

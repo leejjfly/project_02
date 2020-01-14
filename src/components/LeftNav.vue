@@ -86,7 +86,6 @@ export default {
           ]
         }
       ],
-      activePath: ''
     };
   },
   created(){
@@ -97,9 +96,6 @@ export default {
     getRouter(name,title) {
       this.active=title;
       this.$router.push(name);
-    },
-    selected(id) {
-      this.active = id;
     },
     //页面刷新后还能获取路由状态
     // saveNavState(){

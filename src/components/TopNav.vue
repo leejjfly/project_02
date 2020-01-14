@@ -30,11 +30,10 @@
 </template>
 
 <script>
- //import { mapState,mapMutations,mapGetters } from 'vuex'
 export default {
   name: "TopNav",
   computed: {
-   //...mapState(['userName'])
+
   },
   data() {
     return {

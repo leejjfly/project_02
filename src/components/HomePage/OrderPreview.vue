@@ -4,41 +4,52 @@
     <span class="orderPreviewTextStyle">订单预览</span>
     <el-button type="text" class="el-button--text">查看全部订单</el-button>
   </div>
-  <div class="orderItem">
-    <img :src="productInfo.src">
-    <span class="goodsTitle">{{productInfo.title}}</span>
-    <span class="goodsQuantity">*{{productInfo.quantity}}</span>
-    <span class="goodsOrigin">{{productInfo.origin}}</span>
-    <span class="goodsPrice">￥{{productInfo.price}}</span>
-    <span class="goodsStatus">{{productInfo.status}}</span>
-    <span class="check">查看</span>
-  </div>
-  <div class="orderItem">
-    <img :src="productInfo.src">
-    <span class="goodsTitle">{{productInfo.title}}</span>
-    <span class="goodsQuantity">*{{productInfo.quantity}}</span>
-    <span class="goodsOrigin">{{productInfo.origin}}</span>
-    <span class="goodsPrice">￥{{productInfo.price}}</span>
-    <span class="goodsStatus">{{productInfo.status}}</span>
+  <div class="orderItem" v-for="product in productInfo">
+    <img :src="product.src">
+    <span class="goodsTitle">{{product.title}}</span>
+    <span class="goodsQuantity">{{'*'+product.quantity}}</span>
+    <span class="goodsOrigin">{{product.origin}}</span>
+    <span class="goodsPrice">{{'￥'+product.price.toFixed(2)}}</span>
+    <span class="goodsStatus" :style="{color:product.status=='待收货'?'#FF9914':'#979797'}">{{product.status}}</span>
     <span class="check">查看</span>
   </div>
 </div>
 </template>
 
 <script>
-  import src1 from "../../assets/HomePage/MacBook.jpg";
+  import src1 from "../../assets/HomePage/齐心.jpg";
+  import src2 from "../../assets/HomePage/MacBook.jpg";
+  import src3 from "../../assets/HomePage/惠普.jpg";
     export default {
       name: "OrderPreview",
       data(){
         return{
-          productInfo:{
-            src:src1,
-            title:'Apple MacBook Air 13.3英寸笔记本电脑MQD32CH/A赠Beats Solo3耳机【教育优惠套装】',
-            quantity:'1',
-            origin:'领先',
-            price:'5599.0',
-            status:'待收货'
-          }
+          productInfo:[
+            {
+              src:src1,
+              title:'齐心 NO.336 纸板夹 A4 1.5寸 35mm 2孔D型夹 （计价单位：个）',
+              quantity:1,
+              origin:'领先',
+              price:13.4,
+              status:'待收货'
+            },
+            {
+              src:src2,
+              title:'Apple MacBook Air 13.3英寸笔记本电脑MQD32CH/A赠Beats Solo3耳机【教育优惠套装】',
+              quantity:1,
+              origin:'领先',
+              price:5599.0,
+              status:'待收货'
+            },
+            {
+              src:src3,
+              title:'惠普（HP） LASERJET PRO MFP M128FW 黑白激光一体机 A4幅面 黑白 Wifi版（计价单位：台）',
+              quantity:1,
+              origin:'领先',
+              price:5599.0,
+              status:'已完成'
+            }
+          ]
         }
       }
     }

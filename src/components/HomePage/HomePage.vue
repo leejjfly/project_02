@@ -42,7 +42,7 @@
 <style scoped lang="less">
   .main{
     width: 1920px;
-    height: 1200px;
+    height: 1100px;
     position: relative;
     background-color: #f6f6f6;
     .leftNav{

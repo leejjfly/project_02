@@ -33,7 +33,7 @@
                   :cell-style="firstRow">
           <el-table-column prop="id" label="序号" width="100px">
             <template slot-scope="scope">
-              <span>{{scope.$index+1}}</span>
+              <span>{{(pageInfo.currentPage-1)*pageInfo.pageSize+scope.$index+1}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="name" label="名称" width="180px">
@@ -254,7 +254,6 @@ export default {
       this.pageInfo.currentPage = currentPage;
       this.tableData = this.userGroupManage.slice((this.pageInfo.currentPage - 1) * this.pageInfo.pageSize, this.pageInfo.currentPage * this.pageInfo.pageSize);
       this.pageInfo.total = this.userGroupManage.length;
-
     },
     //添加子节点
     append(data) {
@@ -275,8 +274,8 @@ export default {
     addUserGroup() {
       this.$refs.addUserGroupFormRef.validate(valid => {
         if (!valid) return;
-        this.tableData = this.tableData || [];
-        this.tableData.push({
+        this.userGroupManage = this.userGroupManage || [];
+        this.userGroupManage.push({
           name: this.addUserGroupForm.userGroupName,
           usingPeopleAmount: this.addUserGroupForm.amount,
           operate: '删除'
@@ -388,7 +387,7 @@ export default {
         cursor: pointer;
         .userGroupManageSearchButtonText {
           font-size: 14px;
-          color: #2c2c2c;
+          color: #ffffff;
           display: inline-block;
           margin-left: 13px;
           margin-top: 8px;
@@ -469,7 +468,7 @@ export default {
       cursor: pointer;
       .saveButtonText{
         font-size: 14px;
-        color: #2c2c2c;
+        color: #ffffff;
         display: inline-block;
         margin-left: 5px;
         margin-top: 5px;

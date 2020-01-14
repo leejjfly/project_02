@@ -81,21 +81,21 @@ export default {
       position: relative;
       top: -10%;
       margin-left: 5px;
-      color: #2c2c2c;
+      color: #ffffff;
     }
     div {
       width: 15px;
       height: 15px;
       border-radius: 7.5px;
       position: absolute;
-      background-color: rgba(44, 44, 44, 0.8);
+      background-color:#ffffff;
       top: 12px;
       right: 12px;
       .num {
         position: relative;
         top: -5px;
         right: 1px;
-        color: white;
+        color: #10c899;
         font-size: 12px;
       }
     }

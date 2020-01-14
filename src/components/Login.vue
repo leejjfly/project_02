@@ -53,8 +53,8 @@ export default {
     return {
       //这是登录表单的用户名跟密码
       loginForm: {
-        username: "lxwl123",
-        password: "123456"
+        username: '',
+        password: ''
       },
       //这是表单的验证规则对象
       loginFormRules: {

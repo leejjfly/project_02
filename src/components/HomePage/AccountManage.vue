@@ -133,7 +133,8 @@
         <el-input v-model="editUserForm.account"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="editUserForm.password"></el-input><el-button>重置密码</el-button>
+        <el-input type="password" v-model="editUserForm.password"></el-input>
+        <el-button @click="resetPassword">重置密码</el-button>
       </el-form-item>
       <el-form-item label="姓名" prop="username">
         <el-input v-model="editUserForm.username"></el-input>
@@ -436,7 +437,10 @@
           this.pageInfo.total=this.accountManage.length;
 
         },
-
+        //重置密码
+        resetPassword(){
+          this.editUserForm.password='';
+        }
       },
       computed:{
 
@@ -486,7 +490,7 @@
         cursor: pointer;
         .accountManageSearchButtonText{
           font-size: 14px;
-          color: #2c2c2c;
+          color: #ffffff;
           display: inline-block;
           margin-left: 13px;
           margin-top: 8px;

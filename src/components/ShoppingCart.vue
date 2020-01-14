@@ -17,7 +17,7 @@
       :header-cell-style="{background:'#eee',textAlign:'center'}" :cell-style="{textAlign:'center'}"
       :data="added"
       @selection-change="handleSelectionChange"
-
+      ref="addedRef"
       style="width: 100%">
       <el-table-column
         type="selection"
@@ -139,7 +139,7 @@
 
 <!--    购物车底部-->
     <div class="shoppingCartBottom">
-      <el-checkbox class="check">全选</el-checkbox>
+      <el-checkbox v-model='checked' class="check" @change="toggleSelection(added)">全选</el-checkbox>
       <span class="del" @click="delSelectedProductsDialog">删除选中的商品</span>
       <span class="exportInfo">导出商品信息</span>
       <span class="selected">已选<span class="num">{{selectedRow}}</span>件商品</span>
@@ -207,7 +207,8 @@
         selectedRow:0,
         multipleSelection:0,
         //删除选中商品的对话框
-        delDialogVisible: false
+        delDialogVisible: false,
+        checked:null
       }
     },
     components:{
@@ -232,6 +233,7 @@
       handleSelectionChange:function(val) {
         this.multipleSelection = val;//相当于选中了哪一行或者哪几行
       },
+      //显示删除选中商品的弹窗
       delSelectedProductsDialog(){
         this.delDialogVisible=true;
       },
@@ -249,7 +251,17 @@
             i--;
           }
         }
-      }
+      },
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.addedRef.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.addedRef.clearSelection();
+        }
+        // console.log(rows);
+      },
 
 
     }

@@ -55,7 +55,7 @@
     </div>
 <!--  商品-->
    <div class="goodsLibrary">
-     <div class="goods"  v-for="(good,index) in $store.getters.getGoods" :key="getGoods.id">
+     <div class="goods"  v-for="(good,index) in goods" :key="getGoods.id">
        <img class="goodsImg" :src="good.src" alt="">
        <div class="price">
          <span class="counterPrice">￥{{good.counterPrice}}</span>
@@ -80,6 +80,17 @@
        </div>
      </div>
    </div>
+   <el-pagination class="el-pagination"
+                  @current-change="handleCurrentChange"
+                  @size-change="handleSizeChange"
+                  :page-size="pageInfo.pageSize"
+                  :page-sizes="[4, 8, 16, 32]"
+                  prev-text="上一页"
+                  next-text="下一页"
+                  :current-page.sync="pageInfo.currentPage"
+                  layout="total, sizes,prev, pager, next,jumper"
+                  :total="pageInfo.total">
+   </el-pagination>
  </div>
 </template>
 
@@ -94,21 +105,45 @@
       ...mapGetters(['getGoods'])
     },
     methods:{
-      ...mapActions(['addToCart'])
+      ...mapActions(['addToCart']),
+      handleCurrentChange(currentPage) {
+        this.pageInfo.currentPage = currentPage;
+        this.goods = this.getGoods.slice((this.pageInfo.currentPage - 1) * this.pageInfo.pageSize, this.pageInfo.currentPage * this.pageInfo.pageSize);
+        this.pageInfo.total = this.getGoods.length;
+      },
+      handleSizeChange(value) {
+        this.pageInfo.pageSize = value;
+        this.goods = this.getGoods.slice((this.pageInfo.currentPage - 1) * this.pageInfo.pageSize, this.pageInfo.currentPage * this.pageInfo.pageSize);
+        this.pageInfo.total = this.getGoods.length;
+      },
     },
     data(){
       return{
-
+        pageInfo:{
+          pageSize:8,
+          currentPage:1,
+          total:0,
+        },
+        goods:[]
       }
-    }
+    },
+    created() {
+      this.pageInfo.total=this.getGoods.length;
+      if (this.pageInfo.pageSize <= this.pageInfo.total) {
+        for (let i = 0; i < this.pageInfo.pageSize; i++) {
+          this.goods.push(this.getGoods[i]);
+        }
+      }
+    },
   }
 </script>
 
 <style scoped lang="less">
   .goodsBox{
     width: 990px;
-    height: 1089px;
+    height: 1040px;
     background-color: #ffffff;
+    position: relative;
     .counterGoods {
       width: 990px;
       height: 50px;
@@ -262,11 +297,13 @@
     }
     .goodsLibrary{
       width: 990px;
-      height: 560px;
+      height: 500px;
+      margin-top: 20px;
       .goods{
         width: 240px;
         height: 270px;
         display: inline-block;
+        margin-top: 20px;
         .goodsImg{
           width: 220px;
           height: 170px;
@@ -341,6 +378,11 @@
 
         }
       }
+    }
+    .el-pagination{
+      position: absolute;
+      bottom: 40px;
+      right: 20px;
     }
   }
 </style>
