@@ -4,7 +4,7 @@
     <div class="icon">
       <img src="../assets/HomePage/伊利.png" class="yili" alt="">
       <span class="yl" >中国伊利集团企业采购专柜</span>
-      <router-link to="/homepage/goods">
+      <router-link to="/procurement/goods">
         <div class="button">
           <span class="buttonText">返回继续购物</span>
         </div>
@@ -40,8 +40,7 @@
         label="单价(元)"
         width="170">
         <template slot-scope="scope">
-          <span>￥</span>
-          <span>{{scope.row.unitPrice}}</span>
+          <span>{{'￥'+scope.row.unitPrice}}</span>
         </template>
       </el-table-column>
 
@@ -59,8 +58,7 @@
         label="小计(元)"
         width="200">
         <template slot-scope="scope">
-          <span>￥</span>
-          <span>{{(scope.row.unitPrice*scope.row.quantity).toFixed(2)}}</span>
+          <span>{{'￥'+(scope.row.unitPrice*scope.row.quantity).toFixed(2)}}</span>
         </template>
       </el-table-column>
 
@@ -139,7 +137,7 @@
 
 <!--    购物车底部-->
     <div class="shoppingCartBottom">
-      <el-checkbox v-model='checked' class="check" @change="toggleSelection(added)">全选</el-checkbox>
+      <el-checkbox v-model='checked' class="check" @change="selectAll">全选</el-checkbox>
       <span class="del" @click="delSelectedProductsDialog">删除选中的商品</span>
       <span class="exportInfo">导出商品信息</span>
       <span class="selected">已选<span class="num">{{selectedRow}}</span>件商品</span>
@@ -225,13 +223,17 @@
         }
         return '￥'+this.sum.toFixed(2);
       },
-
     },
     methods:{
       ...mapActions(['delProduct']),
       //购物车中选中行数
       handleSelectionChange:function(val) {
         this.multipleSelection = val;//相当于选中了哪一行或者哪几行
+        if(val.length==this.added.length){
+          this.checked=true;
+        }else{
+          this.checked=false;
+        }
       },
       //显示删除选中商品的弹窗
       delSelectedProductsDialog(){
@@ -252,18 +254,13 @@
           }
         }
       },
-      toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.addedRef.toggleRowSelection(row);
-          });
-        } else {
+      selectAll() {
+        if(this.checked){
+          this.$refs.addedRef.toggleAllSelection();
+        }else{
           this.$refs.addedRef.clearSelection();
         }
-        // console.log(rows);
       },
-
-
     }
   }
 </script>
@@ -307,7 +304,6 @@
    }
    .shoppingCart{
      width: 1170px;
-     height: 620px;
      margin: 0 auto;
      .img{
        width: 80px;

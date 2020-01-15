@@ -20,7 +20,10 @@
 <!--    客服-->
     <div class="customerServiceStaff">
       <img src="../assets/TopNav/客服.png" alt="" />
-      <a href="#">客服</a>
+      <span v-if="!username" >客服</span>
+      <span class="serviceStaff" v-if="username">
+        专属客服：领先13888888888
+      </span>
     </div>
 <!--    退出-->
     <div class="logout">
@@ -69,6 +72,9 @@ export default {
   }
   .customerServiceStaff{
     margin-left: 40px;
+    .serviceStaff{
+      cursor: pointer;
+    }
   }
   .logout{
     margin-left: 40px;

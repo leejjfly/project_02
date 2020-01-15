@@ -319,7 +319,7 @@ export default {
       return this.tableData;
     },
     firstRow({row,column,rowIndex,columnIndex}){
-      if(rowIndex==0){
+      if(rowIndex==0&&this.pageInfo.currentPage==1){
         return 'color:#10c899;textAlign:center;'
       }else{
         return 'textAlign:center;'

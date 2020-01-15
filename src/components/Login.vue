@@ -88,34 +88,32 @@ export default {
       //   //2.通过编程式导航跳转到后台主页，路由地址是/home
       //   this.$router.push("/topnav");
       // });
-
-
-     // window.localStorage.setItem('name',{
-     //   users:[
-     //     {username:'wang',password:11},
-     //     {username:'li',password:11},
-     //     {username:'liu',password:11},
-     //     {username:'zhao',password:11},
-     //   ]
-     // });
-
-
-     //  if(JSON.parse(window.localStorage.getItem(('name'))).users.includes({username:this.loginForm.username,password:this.loginForm.password})){
-     //    this.$message.success("登录成功");
-     //    window.localStorage.setItem('user',JSON.stringify({username:this.loginForm.username,password:this.loginForm.password}))
-     //    this.$router.push('/homepage');
-     //  }else {
-     //    this.$message.error("登录失败");
-     //
-     //  }
-      if(this.loginForm.username=='lxwl123'&&this.loginForm.password=='123456'){
-        //this.setUserName(this.loginForm.username);
-        window.sessionStorage.setItem("username",this.loginForm.username);
-        this.$message.success("登录成功");
-        this.$router.push('/homepage');
+      if(!this.loginForm.username){
+        this.$message.error("请输入用户名");
       }else{
-        this.$message.error("登录失败");
+        if(this.loginForm.username!='lxwl123'){
+          this.$message.error("用户名不存在");
+        }else{
+          if(!this.loginForm.password){
+            this.$message.error("密码不能为空");
+          }else{
+            if(this.loginForm.password!='123456'){
+              this.$message.error("密码不正确");
+            }else {
+              window.sessionStorage.setItem("username",this.loginForm.username);
+              this.$message.success("登录成功");
+              this.$router.push('/homepage');
+            }
+          }
+        }
       }
+    //   if(this.loginForm.username=='lxwl123'&&this.loginForm.password=='123456'){
+    //     window.sessionStorage.setItem("username",this.loginForm.username);
+    //     this.$message.success("登录成功");
+    //     this.$router.push('/homepage');
+    //   }else{
+    //     this.$message.error("登录失败");
+    //   }
     }
   }
 };

@@ -2,7 +2,7 @@
 <div class="orderBox">
   <div class="orderPreviewText">
     <span class="orderPreviewTextStyle">订单预览</span>
-    <el-button type="text" class="el-button--text">查看全部订单</el-button>
+    <el-button type="text" class="el-button">查看全部订单</el-button>
   </div>
   <div class="orderItem" v-for="product in productInfo">
     <img :src="product.src">
@@ -73,11 +73,10 @@
         height: 30px;
         margin-left: 20px;
       }
-      .el-button--text{
+      .el-button{
         width: 100px;
         height: 30px;
         margin-top:10px;
-        border: 2px #eeeeee solid;
         background-color: white;
         border-radius: 3px;
         position: absolute;

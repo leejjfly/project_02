@@ -1,8 +1,12 @@
 <template>
   <div class="breadBox">
     <el-breadcrumb separator=">" class="el-breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/homepage' }">企业中心</el-breadcrumb-item>
-      <el-breadcrumb-item>首页</el-breadcrumb-item>
+      <el-breadcrumb-item
+        v-for="(item,index) in breadList"
+        :key="index"
+        :to="{ path: item.path }">
+        {{item.meta.title}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 
@@ -13,38 +17,44 @@
         name: "BreadCrumbs",
       data(){
           return{
-            menu:[
-              {firstMenu:''},
-              {secondMenu:''}
-            ]
+            breadList:[]
           }
+      },
+      watch:{
+          $route(){
+            this.getBreadCrumb();
+          }
+      },
+      methods:{
+          // isHomepage(route){
+          //   return route.name === 'homepage'
+          // },
+        getBreadCrumb(){
+          let matched = this.$route.matched;
+          // if(!this.isHomepage(matched[0])){
+          //   matched = [{path:'/homepage',meta:{title:'企业中心'}}].concat(matched);
+          // }
+          this.breadList=matched;
+        }
+      },
+      created() {
+          this.getBreadCrumb();
       }
     }
 </script>
 
 <style scoped lang="less">
-  /*div{*/
-  /*  width: 1920px;*/
-  /*  background-color: #eeeeee;*/
-  /*  span{*/
-  /*    font-size: 14px;*/
-  /*    display: inline-block;*/
-  /*    margin-top: 20px;*/
-  /*    margin-bottom: 20px;*/
-  /*    margin-left: 376px;*/
-  /*  }*/
-  /*}*/
   .breadBox{
     background-color: #f6f6f6;
     width: 1920px;
     height: 30px;
     position: relative;
     .el-breadcrumb{
-      width: 160px;
+      width: 990px;
       height: 30px;
       position: absolute;
       margin-left: 376px;
-      font-size: 16px;
+      font-size: 14px;
       margin-top: 10px;
     }
   }
